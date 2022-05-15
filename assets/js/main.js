@@ -1,56 +1,62 @@
 let gamePlace = document.getElementById("gamePlace");
 let game = gamePlace.querySelector("div");
-const app = new PIXI.Application({width: 1280, height: 640, backgroundColor: 0X6F9ACA});
+const app = new PIXI.Application({
+    width: 1280,
+    height: 640,
+    backgroundColor: 0X6F9ACA,
+    resolution: window.devicePixelRatio || 1
+});
 game.appendChild(app.view);
 
 //фон
-const background = PIXI.Sprite.from("assets/image/Environment/back_rocks.png");
-background.scale.set(0.5);
-background.width = app.screen.width;
-/*let backRock = new PIXI.TilingSprite(background);*/
-/*backRock.anchor.y = 0.5;
-backRock.anchor.x=0.5;
-backRock.position.x = 200;
-backRock.position.y = 200;*/
-background.x = 0;
-background.y = 255;
-app.stage.addChild(background);
+const mountain = new PIXI.Texture.from("assets/image/Environment/back_rocks.png");
+const backgroundMountains = new PIXI.TilingSprite(mountain, app.screen.width, app.screen.height - app.screen.height / 2);
+backgroundMountains.tileScale.set(0.5);
+backgroundMountains.y = app.screen.height - backgroundMountains.height;
+app.stage.addChild(backgroundMountains);
 
-const floor = PIXI.Sprite.from("assets/image/Environment/floor.png");
-floor.height = app.screen.height / 5;
-floor.width = app.screen.width;
-floor.position.y = 600;
-/*floor.rotation = 0.1;*/
-app.stage.addChild(floor);
+const ice = new PIXI.Texture.from("assets/image/Environment/floor.png");
+const iceFloor = new PIXI.TilingSprite(ice, app.screen.width, app.screen.height - app.screen.height * 0.9);
+iceFloor.y = app.screen.height - iceFloor.height;
+app.stage.addChild(iceFloor);
 
-const sun = PIXI.Sprite.from("assets/image/Environment/bg_sun.png");
-/*floor.height = app.screen.height / 5;
-floor.width = app.screen.width;*/
-/*sun.x= ;*/
-sun.y = -100;
-app.stage.addChild(sun);
+const sunTexture = new PIXI.Texture.from("assets/image/Environment/bg_sun.png");
+const sunSprite = new PIXI.Sprite(sunTexture);
+/*sunSprite.scale.set(0.5);*/
+app.stage.addChild(sunSprite);
 
-/*sun.x=255;*/
+const treeOne = new PIXI.Texture.from("assets/image/Environment/tree_1.png");
+const treeOneSprite = new PIXI.Sprite(treeOne);
+treeOneSprite.scale.set(0.5);
+treeOneSprite.position.set(20, app.screen.height - treeOneSprite.height * 1.3);
 
+const treeTwo = new PIXI.Texture.from("assets/image/Environment/tree_2.png");
+const treeTwoSprite = new PIXI.Sprite(treeTwo);
+treeTwoSprite.scale.set(0.5);
+treeTwoSprite.position.set(app.screen.width - treeTwoSprite.width * 1.5, app.screen.height - treeTwoSprite.height * 1.5);
 
+const treeThree = new PIXI.Texture.from("assets/image/Environment/tree_2.png");
+const treeThreeSprite = new PIXI.Sprite(treeThree);
+treeThreeSprite.scale.set(0.5);
+treeThreeSprite.position.set(100, app.screen.height - treeThreeSprite.height * 1.5);
+
+app.stage.addChild(treeOneSprite);
+app.stage.addChild(treeTwoSprite);
+app.stage.addChild(treeThreeSprite);
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 const container = new PIXI.Container();
 container.x = app.screen.width / 2;
 container.y = app.screen.height / 2;
 app.stage.addChild(container);
 
-
-// import {formIntro} from "./form_intro";
-
-
-
-// //форма интро
+//форма интро
 const formIntro = PIXI.Sprite.from('assets/image/UI/info_plate_big.png');
 formIntro.scale.set(0.67);
 container.addChild(formIntro);
 formIntro.anchor.set(0.5);
 
 //Font Style
-
 class FontStyle extends PIXI.TextStyle {
     constructor(fill, fontSize = 60, fontFamily = 'Zubilo', dropShadow = false,) {
         super();
@@ -69,10 +75,9 @@ class FontStyle extends PIXI.TextStyle {
 
 //рекорды
 let value = 55;
-let textRecord = new PIXI.Text("Рекорд: " + value, new FontStyle("#00FD17", undefined, undefined, true));
+let textRecord = new PIXI.Text("Рекорд: " + value, new FontStyle("#00FD17", 67, undefined, true));
 textRecord.anchor.set(0.5);
 textRecord.style.wordWrap = "true";
-textRecord.style.fontSize="67px";
 formIntro.addChild(textRecord);
 textRecord.y = -270;
 
@@ -103,9 +108,9 @@ userNameBar.addChild(textUserNameBar);
 
 //buttons
 let buttonMiActive = new PIXI.Texture.from('assets/image/UI/login_button_active.png');
- let buttonMiHover = new PIXI.Texture.from('assets/image/UI/login_button_hover.png');
- let buttonMiPress = new PIXI.Texture.from('assets/image/UI/login_button_press.png');
- let buttonMi = new PIXI.Sprite(buttonMiActive);
+let buttonMiHover = new PIXI.Texture.from('assets/image/UI/login_button_hover.png');
+let buttonMiPress = new PIXI.Texture.from('assets/image/UI/login_button_press.png');
+let buttonMi = new PIXI.Sprite(buttonMiActive);
 buttonMi.anchor.set(0.5);
 buttonMi.y = -65;
 buttonMi.interactive = true;
@@ -119,8 +124,8 @@ formIntro.addChild(buttonMi);
 
 let buttonPlayActive = new PIXI.Texture.from('assets/image/UI/play_button_active.png');
 let buttonPlayHover = new PIXI.Texture.from('assets/image/UI/play_button_hover.png');
- let buttonPlayPress = new PIXI.Texture.from('assets/image/UI/play_button_press.png');
- let buttonPlay = new PIXI.Sprite.from(buttonPlayActive);
+let buttonPlayPress = new PIXI.Texture.from('assets/image/UI/play_button_press.png');
+let buttonPlay = new PIXI.Sprite.from(buttonPlayActive);
 buttonPlay.anchor.set(0.5);
 buttonPlay.x = 163;
 buttonPlay.y = 300;
@@ -135,8 +140,8 @@ formIntro.addChild(buttonPlay);
 
 let buttonLeadBoardActive = new PIXI.Texture.from('assets/image/UI/leadboard_button_active.png');
 let buttonLeadBoardHover = new PIXI.Texture.from('assets/image/UI/leadboard_button_hover.png');
- let buttonLeadBoardPress = new PIXI.Texture.from('assets/image/UI/leadboard_button_press.png');
- let buttonLeadBoard = new PIXI.Sprite.from(buttonLeadBoardActive);
+let buttonLeadBoardPress = new PIXI.Texture.from('assets/image/UI/leadboard_button_press.png');
+let buttonLeadBoard = new PIXI.Sprite.from(buttonLeadBoardActive);
 buttonLeadBoard.anchor.set(0.5);
 buttonLeadBoard.x = -163;
 buttonLeadBoard.y = 300;
@@ -153,6 +158,7 @@ formIntro.addChild(buttonLeadBoard);
 //СОБЫТИЯ:
 
 //события кнопки Mi
+
 function onMiButtonDown() {
     this.isdown = true;
     this.texture = buttonMiPress;
@@ -175,7 +181,7 @@ function onMiButtonOver() {
     this.texture = buttonMiHover;
 }
 
- function onMiButtonOut() {
+function onMiButtonOut() {
     this.isOver = false;
     if (this.isdown) {
         return;
@@ -184,13 +190,13 @@ function onMiButtonOver() {
 }
 
 //события кнопки Play
- function onPlayButtonDown() {
+function onPlayButtonDown() {
     this.isdown = true;
     this.texture = buttonPlayPress;
     this.alpha = 1;
 }
 
- function onPlayButtonUp() {
+function onPlayButtonUp() {
     this.isdown = false;
     if (this.isOver) {
         this.texture = buttonPlayHover;
@@ -221,7 +227,7 @@ function onLeadBoardButtonDown() {
     this.alpha = 1;
 }
 
- function onLeadBoardButtonUp() {
+function onLeadBoardButtonUp() {
     this.isdown = false;
     if (this.isOver) {
         this.texture = buttonLeadBoardHover;
@@ -236,12 +242,11 @@ function onLeadBoardButtonOver() {
     this.texture = buttonLeadBoardHover;
 }
 
- function onLeadBoardButtonOut() {
+function onLeadBoardButtonOut() {
     this.isOver = false;
     if (this.isdown) {
         return;
     }
     this.texture = buttonLeadBoardActive;
 }
-
 
