@@ -1,8 +1,8 @@
 // export * from "main.js";
 
-// //СОБЫТИЯ:
+ //СОБЫТИЯ:
 
-// //события кнопки Mi
+ //события кнопки Mi
 // function onMiButtonDown() {
 //     this.isdown = true;
 //     this.texture = buttonMiPress;
@@ -33,7 +33,7 @@
 //     this.texture = buttonMiActive;
 // }
 
-// //события кнопки Play
+//события кнопки Play
 // function onPlayButtonDown() {
 //     this.isdown = true;
 //     this.texture = buttonPlayPress;
