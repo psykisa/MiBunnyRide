@@ -1,4 +1,39 @@
-// export * from "main.js";
+//----- Создание фона -----//
+export function background(app) {
+    const mountain = new PIXI.Texture.from("assets/image/Environment/back_rocks.png");
+    const backgroundMountains = new PIXI.TilingSprite(mountain, app.screen.width, app.screen.height - app.screen.height / 2);
+    backgroundMountains.tileScale.set(0.5);
+    backgroundMountains.y = app.screen.height - backgroundMountains.height;
+    app.stage.addChild(backgroundMountains);
+
+    const ice = new PIXI.Texture.from("assets/image/Environment/floor.png");
+    const iceFloor = new PIXI.TilingSprite(ice, app.screen.width, app.screen.height - app.screen.height * 0.9);
+    iceFloor.y = app.screen.height - iceFloor.height;
+    app.stage.addChild(iceFloor);
+
+    const sunTexture = new PIXI.Texture.from("assets/image/Environment/bg_sun.png");
+    const sunSprite = new PIXI.Sprite(sunTexture);
+    app.stage.addChild(sunSprite);
+
+    const treeOne = new PIXI.Texture.from("assets/image/Environment/tree_1.png");
+    const treeOneSprite = new PIXI.Sprite(treeOne);
+    treeOneSprite.scale.set(0.5);
+    treeOneSprite.position.set(20, app.screen.height - treeOneSprite.height * 1.3);
+
+    const treeTwo = new PIXI.Texture.from("assets/image/Environment/tree_2.png");
+    const treeTwoSprite = new PIXI.Sprite(treeTwo);
+    treeTwoSprite.scale.set(0.5);
+    treeTwoSprite.position.set(app.screen.width - treeTwoSprite.width * 1.5, app.screen.height - treeTwoSprite.height * 1.5);
+
+    const treeThree = new PIXI.Texture.from("assets/image/Environment/tree_2.png");
+    const treeThreeSprite = new PIXI.Sprite(treeThree);
+    treeThreeSprite.scale.set(0.5);
+    treeThreeSprite.position.set(100, app.screen.height - treeThreeSprite.height * 1.5);
+
+    app.stage.addChild(treeOneSprite);
+    app.stage.addChild(treeTwoSprite);
+    app.stage.addChild(treeThreeSprite);
+}
 
  //СОБЫТИЯ:
 

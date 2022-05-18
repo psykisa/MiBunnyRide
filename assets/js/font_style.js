@@ -1,4 +1,4 @@
-/*
+/*-----Шрифт для форм-----*/
 export class FontStyle extends PIXI.TextStyle {
     constructor(fill, fontSize = 60, fontFamily = 'Zubilo', dropShadow = false,) {
         super();
@@ -6,7 +6,7 @@ export class FontStyle extends PIXI.TextStyle {
         this.fontSize = fontSize;
         this.fontFamily = fontFamily;
         this.dropShadow = dropShadow;
-        this.dropShadowColor = '#000000';
+        this.dropShadowColor = '#003c76';
         this.dropShadowBlur = 5;
         this.dropShadowDistance = 10;
         this.dropShadowAngle = -4.8;
@@ -14,4 +14,3 @@ export class FontStyle extends PIXI.TextStyle {
         this.align = "center";
     }
 }
-*/

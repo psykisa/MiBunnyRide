@@ -1,50 +1,98 @@
+import {FontStyle} from './font_style.js';
+import {background} from './functions.js'
+
 let gamePlace = document.getElementById("gamePlace");
 let game = gamePlace.querySelector("div");
+/*game.style.overflow = "hidden";*/
 const app = new PIXI.Application({
     width: 1280,
     height: 640,
     backgroundColor: 0X6F9ACA,
-    resolution: window.devicePixelRatio || 1
+    resolution: window.devicePixelRatio || 1,
 });
+app.stage.interactive = true;
+app.stage.cursor = "pointer";
 game.appendChild(app.view);
+background(app);
 
-//фон
-const mountain = new PIXI.Texture.from("assets/image/Environment/back_rocks.png");
-const backgroundMountains = new PIXI.TilingSprite(mountain, app.screen.width, app.screen.height - app.screen.height / 2);
-backgroundMountains.tileScale.set(0.5);
-backgroundMountains.y = app.screen.height - backgroundMountains.height;
-app.stage.addChild(backgroundMountains);
+/*createHeader();*/
 
-const ice = new PIXI.Texture.from("assets/image/Environment/floor.png");
-const iceFloor = new PIXI.TilingSprite(ice, app.screen.width, app.screen.height - app.screen.height * 0.9);
-iceFloor.y = app.screen.height - iceFloor.height;
-app.stage.addChild(iceFloor);
+//----- Шапка ----------------------------------------------------------------------------//
+const headerContainer = new PIXI.Container();
+app.stage.addChild(headerContainer);
+//-------- Поле с монетами -----//
+let coin = "0";
+const coinContainer = new PIXI.Container();
+coinContainer.sortableChildren = true;
+coinContainer.scale.set(0.7);
+coinContainer.position.set(12, 10);
+const coinIcon = new PIXI.Sprite.from('assets/image/UI/collect_coin_icon.png');
+coinIcon.zIndex = 1;
+const formOfCoin = new PIXI.Sprite.from('assets/image/UI/coin_score_plate.png');
+formOfCoin.width = 192;
+formOfCoin.position.set(65, 12);
+const amountOfCoin = new PIXI.Text(coin, new FontStyle('#FFFFFF'));
+amountOfCoin.x = formOfCoin.width / 2 - amountOfCoin.width / 2;
+formOfCoin.addChild(amountOfCoin);
+coinContainer.addChild(coinIcon, formOfCoin);
+headerContainer.addChild(coinContainer);
 
-const sunTexture = new PIXI.Texture.from("assets/image/Environment/bg_sun.png");
-const sunSprite = new PIXI.Sprite(sunTexture);
-/*sunSprite.scale.set(0.5);*/
-app.stage.addChild(sunSprite);
+//------------ Количество монет, выравнивание текста в поле с монетами ----------//
+const setCoin = value => {
+    coin = value;
+    amountOfCoin.text = coin;
+    amountOfCoin.x = formOfCoin.width / 2 - amountOfCoin.width / 2;
+}
+/*setCoin(123);*/
 
-const treeOne = new PIXI.Texture.from("assets/image/Environment/tree_1.png");
-const treeOneSprite = new PIXI.Sprite(treeOne);
-treeOneSprite.scale.set(0.5);
-treeOneSprite.position.set(20, app.screen.height - treeOneSprite.height * 1.3);
+//----- Панель  с кнопками ------//
+const headerMenu = new PIXI.Container();
+// кнопка "Развернуть"
+const activeGrowButton = new PIXI.Texture.from('assets/image/UI/btn_fullscreen_active.png');
+const pressGrowButton = new PIXI.Texture.from('assets/image/UI/btn_fullscreen_press.png');
+const hoverGrowButton = new PIXI.Texture.from('assets/image/UI/btn_fullscreen_hover.png');
+const growButton = new PIXI.Sprite(activeGrowButton);
+growButton.interactive = true;
+growButton
+    .on('pointerdown', onGrowButtonDown)
+    .on('pointerup', onGrowButtonUp)
+    .on('pointerover', onGrowButtonOver)
+    .on('pointerout', onGrowButtonOut);
 
-const treeTwo = new PIXI.Texture.from("assets/image/Environment/tree_2.png");
-const treeTwoSprite = new PIXI.Sprite(treeTwo);
-treeTwoSprite.scale.set(0.5);
-treeTwoSprite.position.set(app.screen.width - treeTwoSprite.width * 1.5, app.screen.height - treeTwoSprite.height * 1.5);
+//  кнопка "Звук"
+const activeSoundButtonOn = new PIXI.Texture.from('assets/image/UI/btn_sound_1_active.png');
+const pressSoundButtonOn = new PIXI.Texture.from('assets/image/UI/btn_sound_1_press.png');
+const hoverSoundButtonOn = new PIXI.Texture.from('assets/image/UI/btn_sound_1_hover.png');
+const activeSoundButtonOf = new PIXI.Texture.from('assets/image/UI/btn_sound_0_active.png');
+const pressSoundButtonOf = new PIXI.Texture.from('assets/image/UI/btn_sound_0_press.png');
+const hoverSoundButtonOf = new PIXI.Texture.from('assets/image/UI/btn_sound_0_hover.png');
+const soundButton = new PIXI.Sprite(activeSoundButtonOn);
+soundButton.x = 150;
+soundButton.interactive = true;
+soundButton
+    .on('pointerdown', onSoundButtonDown)
+    .on('pointerup', onSoundButtonUp)
+    .on('pointerover', onSoundButtonOver)
+/*    .on('pointerout', onSoundButtonOut);*/
 
-const treeThree = new PIXI.Texture.from("assets/image/Environment/tree_2.png");
-const treeThreeSprite = new PIXI.Sprite(treeThree);
-treeThreeSprite.scale.set(0.5);
-treeThreeSprite.position.set(100, app.screen.height - treeThreeSprite.height * 1.5);
+// кнопка "Пауза"
+/*const activePauseButton = new PIXI.Texture.from('assets/image/UI/btn_pause_active.png');
+/!* let pressPauseButton = new PIXI.Texture.from('assets/image/UI/btn_pause_press.png');
+ let hoverPauseButton = new PIXI.Texture.from('assets/image/UI/btn_pause_hover.png');*!/
+const pauseButton = new PIXI.Sprite(activePauseButton);
+/!*pauseButton.x = 300;*!/
+pauseButton.interactive = true;
+pauseButton.buttonMode = true;*/
+// headerMenu.addChild(growButton);
+headerMenu.addChild(growButton, soundButton);
+headerMenu.scale.set(0.7);
+headerContainer.addChild(headerMenu);
+headerMenu.position.set(app.screen.width - headerMenu.width, 5);
 
-app.stage.addChild(treeOneSprite);
-app.stage.addChild(treeTwoSprite);
-app.stage.addChild(treeThreeSprite);
+/////////////////////////////////////////////////////////////////////////////////////////
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//----- ФОРМЫ -------------------------------------------------------------------------//
+
 const container = new PIXI.Container();
 container.x = app.screen.width / 2;
 container.y = app.screen.height / 2;
@@ -56,65 +104,46 @@ formIntro.scale.set(0.67);
 container.addChild(formIntro);
 formIntro.anchor.set(0.5);
 
-//Font Style
-class FontStyle extends PIXI.TextStyle {
-    constructor(fill, fontSize = 60, fontFamily = 'Zubilo', dropShadow = false,) {
-        super();
-        this.fill = fill;
-        this.fontSize = fontSize;
-        this.fontFamily = fontFamily;
-        this.dropShadow = dropShadow;
-        this.dropShadowColor = '#003c76';
-        this.dropShadowBlur = 7;
-        this.dropShadowDistance = 6;
-        this.dropShadowAngle = -4.8;
-        this.padding = 20;
-        this.align = "center";
-    }
-}
-
 //рекорды
-let value = 55;
-let textRecord = new PIXI.Text("Рекорд: " + value, new FontStyle("#00FD17", 67, undefined, true));
+let score = 55;
+const textRecord = new PIXI.Text('Рекорд: ' + score, new FontStyle("#00FD17", 67, undefined, true));
 textRecord.anchor.set(0.5);
 textRecord.style.wordWrap = "true";
 formIntro.addChild(textRecord);
 textRecord.y = -270;
 
 //header
-let headerInfoPlate = new PIXI.Sprite.from('assets/image/UI/header_info_plate.png');
+const headerInfoPlate = new PIXI.Sprite.from('assets/image/UI/header_info_plate.png');
 headerInfoPlate.anchor.set(0.5);
-headerInfoPlate.scale.set(0.67);
-headerInfoPlate.y = -271;
-container.addChild(headerInfoPlate);
+headerInfoPlate.y = -407;
+formIntro.addChild(headerInfoPlate);
 
-let textHeaderInfoPlate = new PIXI.Text("Твои рекорды:", new FontStyle("#003D71"));
+const textHeaderInfoPlate = new PIXI.Text("Твои рекорды:", new FontStyle("#003D71"));
 textHeaderInfoPlate.anchor.set(0.5);
 textHeaderInfoPlate.y = -10;
 headerInfoPlate.addChild(textHeaderInfoPlate);
 
 //about user
-let userNameBar = new PIXI.Sprite.from('assets/image/UI/user_name_bar.png');
+const userNameBar = new PIXI.Sprite.from('assets/image/UI/user_name_bar.png');
 userNameBar.anchor.set(0.5);
 userNameBar.y = 100;
 formIntro.addChild(userNameBar);
 
 let aboutUser = "Alex";
-let textUserNameBar = new PIXI.Text(aboutUser, new FontStyle("#FFFFFF"));
+const textUserNameBar = new PIXI.Text(aboutUser, new FontStyle("#FFFFFF"));
 textUserNameBar.anchor.set(0.5);
 textUserNameBar.x = -200;
 userNameBar.addChild(textUserNameBar);
 
 
-//buttons
-let buttonMiActive = new PIXI.Texture.from('assets/image/UI/login_button_active.png');
-let buttonMiHover = new PIXI.Texture.from('assets/image/UI/login_button_hover.png');
-let buttonMiPress = new PIXI.Texture.from('assets/image/UI/login_button_press.png');
-let buttonMi = new PIXI.Sprite(buttonMiActive);
+//buttons Form
+const buttonMiActive = new PIXI.Texture.from('assets/image/UI/login_button_active.png');
+const buttonMiHover = new PIXI.Texture.from('assets/image/UI/login_button_hover.png');
+const buttonMiPress = new PIXI.Texture.from('assets/image/UI/login_button_press.png');
+const buttonMi = new PIXI.Sprite(buttonMiActive);
 buttonMi.anchor.set(0.5);
 buttonMi.y = -65;
 buttonMi.interactive = true;
-buttonMi.buttonMode = true;
 buttonMi
     .on('pointerdown', onMiButtonDown)
     .on('pointerup', onMiButtonUp)
@@ -122,15 +151,14 @@ buttonMi
     .on('pointerout', onMiButtonOut);
 formIntro.addChild(buttonMi);
 
-let buttonPlayActive = new PIXI.Texture.from('assets/image/UI/play_button_active.png');
-let buttonPlayHover = new PIXI.Texture.from('assets/image/UI/play_button_hover.png');
-let buttonPlayPress = new PIXI.Texture.from('assets/image/UI/play_button_press.png');
-let buttonPlay = new PIXI.Sprite.from(buttonPlayActive);
+const buttonPlayActive = new PIXI.Texture.from('assets/image/UI/play_button_active.png');
+const buttonPlayHover = new PIXI.Texture.from('assets/image/UI/play_button_hover.png');
+const buttonPlayPress = new PIXI.Texture.from('assets/image/UI/play_button_press.png');
+const buttonPlay = new PIXI.Sprite.from(buttonPlayActive);
 buttonPlay.anchor.set(0.5);
 buttonPlay.x = 163;
 buttonPlay.y = 300;
 buttonPlay.interactive = true;
-buttonPlay.buttonMode = true;
 buttonPlay
     .on('pointerdown', onPlayButtonDown)
     .on('pointerup', onPlayButtonUp)
@@ -138,15 +166,14 @@ buttonPlay
     .on('pointerout', onPlayButtonOut);
 formIntro.addChild(buttonPlay);
 
-let buttonLeadBoardActive = new PIXI.Texture.from('assets/image/UI/leadboard_button_active.png');
-let buttonLeadBoardHover = new PIXI.Texture.from('assets/image/UI/leadboard_button_hover.png');
-let buttonLeadBoardPress = new PIXI.Texture.from('assets/image/UI/leadboard_button_press.png');
-let buttonLeadBoard = new PIXI.Sprite.from(buttonLeadBoardActive);
+const buttonLeadBoardActive = new PIXI.Texture.from('assets/image/UI/leadboard_button_active.png');
+const buttonLeadBoardHover = new PIXI.Texture.from('assets/image/UI/leadboard_button_hover.png');
+const buttonLeadBoardPress = new PIXI.Texture.from('assets/image/UI/leadboard_button_press.png');
+const buttonLeadBoard = new PIXI.Sprite.from(buttonLeadBoardActive);
 buttonLeadBoard.anchor.set(0.5);
 buttonLeadBoard.x = -163;
 buttonLeadBoard.y = 300;
 buttonLeadBoard.interactive = true;
-buttonLeadBoard.buttonMode = true;
 buttonLeadBoard
     .on('pointerdown', onLeadBoardButtonDown)
     .on('pointerup', onLeadBoardButtonUp)
@@ -155,10 +182,57 @@ buttonLeadBoard
 formIntro.addChild(buttonLeadBoard);
 
 
-//СОБЫТИЯ:
+/////////////////////////-----СОБЫТИЯ -----//////////////////////////////////////////////////////////
+
+//----- События панели управления -----//
+
+//Кнопка "Развернуть"
+function onGrowButtonDown() {
+    this.isdown = true;
+    this.texture = pressGrowButton;
+}
+
+function onGrowButtonUp() {
+    this.isdown = false;
+    if (this.isOver)
+        this.texture = hoverGrowButton;
+}
+
+function onGrowButtonOver() {
+    this.isOver = true;
+    this.texture = hoverGrowButton;
+}
+
+function onGrowButtonOut() {
+    this.isOver = false;
+    this.texture = activeGrowButton;
+}
+
+//Кнопка "Звук"
+function onSoundButtonDown() {
+    this.isdown = true;
+    this.texture = (this.texture === hoverSoundButtonOn) ? pressSoundButtonOn : pressSoundButtonOf;
+}
+
+function onSoundButtonUp() {
+    this.isdown =false;
+    if (this.isOver)
+        this.texture = (this.texture === pressSoundButtonOn) ? hoverSoundButtonOn : hoverSoundButtonOf;
+}
+
+function onSoundButtonOver() {
+    this.isOver = true;
+    this.texture = (this.texture === activeSoundButtonOn) ? hoverSoundButtonOn : hoverSoundButtonOf;
+}
+
+function onSoundButtonOut() {
+    this.isOver = false;
+    this.texture = (this.texture === hoverSoundButtonOn) ? activeSoundButtonOn : activeSoundButtonOf;
+}
+
+//----- Cобытия форм -----//
 
 //события кнопки Mi
-
 function onMiButtonDown() {
     this.isdown = true;
     this.texture = buttonMiPress;
