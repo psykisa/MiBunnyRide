@@ -10,7 +10,7 @@ export class FontStyle extends PIXI.TextStyle {
         this.dropShadowBlur = 5;
         this.dropShadowDistance = 10;
         this.dropShadowAngle = -4.8;
-        this.padding = 20;
+        this.padding = 0;
         this.align = "center";
     }
 }

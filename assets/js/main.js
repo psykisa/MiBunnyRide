@@ -36,14 +36,14 @@ amountOfCoin.x = formOfCoin.width / 2 - amountOfCoin.width / 2;
 formOfCoin.addChild(amountOfCoin);
 coinContainer.addChild(coinIcon, formOfCoin);
 headerContainer.addChild(coinContainer);
-
+console.log("Hello")
 //------------ Количество монет, выравнивание текста в поле с монетами ----------//
 const setCoin = value => {
     coin = value;
     amountOfCoin.text = coin;
     amountOfCoin.x = formOfCoin.width / 2 - amountOfCoin.width / 2;
 }
-/*setCoin(123);*/
+setCoin(123);
 
 //----- Панель  с кнопками ------//
 const headerMenu = new PIXI.Container();
