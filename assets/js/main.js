@@ -1,5 +1,6 @@
-import {FontStyle} from './font_style.js';
-import {background} from './functions.js'
+import { FontStyle } from './font_style.js';
+import { background } from './functions.js';
+import {Howl, Howler} from '../node_modules/howler/dist/howler.min.js';
 
 let gamePlace = document.getElementById("gamePlace");
 let game = gamePlace.querySelector("div");
@@ -13,6 +14,10 @@ const app = new PIXI.Application({
 app.stage.interactive = true;
 app.stage.cursor = "pointer";
 game.appendChild(app.view);
+const sound = new Howl({
+    src:['../sound/super.mp3']
+});
+sound.play();
 background(app);
 
 /*createHeader();*/
@@ -24,7 +29,7 @@ app.stage.addChild(headerContainer);
 let coin = "0";
 const coinContainer = new PIXI.Container();
 coinContainer.sortableChildren = true;
-coinContainer.scale.set(0.7);
+// coinContainer.scale.set(0.7);
 coinContainer.position.set(12, 10);
 const coinIcon = new PIXI.Sprite.from('assets/image/UI/collect_coin_icon.png');
 coinIcon.zIndex = 1;
@@ -36,7 +41,6 @@ amountOfCoin.x = formOfCoin.width / 2 - amountOfCoin.width / 2;
 formOfCoin.addChild(amountOfCoin);
 coinContainer.addChild(coinIcon, formOfCoin);
 headerContainer.addChild(coinContainer);
-console.log("Hello")
 //------------ Количество монет, выравнивание текста в поле с монетами ----------//
 const setCoin = value => {
     coin = value;
@@ -73,21 +77,26 @@ soundButton
     .on('pointerdown', onSoundButtonDown)
     .on('pointerup', onSoundButtonUp)
     .on('pointerover', onSoundButtonOver)
-/*    .on('pointerout', onSoundButtonOut);*/
+    .on('pointerout', onSoundButtonOut);
 
 // кнопка "Пауза"
-/*const activePauseButton = new PIXI.Texture.from('assets/image/UI/btn_pause_active.png');
-/!* let pressPauseButton = new PIXI.Texture.from('assets/image/UI/btn_pause_press.png');
- let hoverPauseButton = new PIXI.Texture.from('assets/image/UI/btn_pause_hover.png');*!/
+const activePauseButton = new PIXI.Texture.from('assets/image/UI/btn_pause_active.png');
+const pressPauseButton = new PIXI.Texture.from('assets/image/UI/btn_pause_press.png');
+const hoverPauseButton = new PIXI.Texture.from('assets/image/UI/btn_pause_hover.png');
 const pauseButton = new PIXI.Sprite(activePauseButton);
-/!*pauseButton.x = 300;*!/
+pauseButton.x = 300;
 pauseButton.interactive = true;
-pauseButton.buttonMode = true;*/
-// headerMenu.addChild(growButton);
-headerMenu.addChild(growButton, soundButton);
-headerMenu.scale.set(0.7);
+pauseButton
+    .on('pointerdown', onPauseButtonDown)
+    .on('pointerup', onPauseButtonUp)
+    .on('pointerover', onPauseButtonOver)
+    .on('pointerout', onPauseButtonOut);
+
+headerMenu.addChild(growButton);
+headerMenu.addChild(growButton, soundButton, pauseButton);
 headerContainer.addChild(headerMenu);
 headerMenu.position.set(app.screen.width - headerMenu.width, 5);
+headerMenu.scale.set(0.7);
 
 /////////////////////////////////////////////////////////////////////////////////////////
 
@@ -215,9 +224,9 @@ function onSoundButtonDown() {
 }
 
 function onSoundButtonUp() {
-    this.isdown =false;
+    this.isdown = false;
     if (this.isOver)
-        this.texture = (this.texture === pressSoundButtonOn) ? hoverSoundButtonOn : hoverSoundButtonOf;
+        this.texture = (this.texture === pressSoundButtonOn) ? hoverSoundButtonOf : hoverSoundButtonOn;
 }
 
 function onSoundButtonOver() {
@@ -228,6 +237,26 @@ function onSoundButtonOver() {
 function onSoundButtonOut() {
     this.isOver = false;
     this.texture = (this.texture === hoverSoundButtonOn) ? activeSoundButtonOn : activeSoundButtonOf;
+}
+
+function onPauseButtonDown() {
+    this.isdown = true;
+    this.texture = pressPauseButton;
+}
+function onPauseButtonUp() {
+    this.isdown = false;
+    if (this.isOver) {
+        this.texture = hoverPauseButton;
+    }
+}
+
+function onPauseButtonOver() {
+    this.isOver = true;
+    this.texture = hoverPauseButton;
+}
+function onPauseButtonOut() {
+this.isOver=false;
+this.texture = activePauseButton;
 }
 
 //----- Cобытия форм -----//
