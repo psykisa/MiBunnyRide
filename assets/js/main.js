@@ -1,7 +1,6 @@
-import { FontStyle } from './font_style.js';
-import { background } from './functions.js';
-import {Howl, Howler} from '../node_modules/howler/dist/howler.min.js';
-
+import { FontStyle } from './font_style.js'
+import { background } from './functions.js'
+// import { Howl ,Howler} from 'howler'
 let gamePlace = document.getElementById("gamePlace");
 let game = gamePlace.querySelector("div");
 /*game.style.overflow = "hidden";*/
@@ -15,9 +14,9 @@ app.stage.interactive = true;
 app.stage.cursor = "pointer";
 game.appendChild(app.view);
 const sound = new Howl({
-    src:['../sound/super.mp3']
+    src:['../audio/super.mp3'],
 });
-sound.play();
+Howler.volume(0.5);
 background(app);
 
 /*createHeader();*/
@@ -219,6 +218,7 @@ function onGrowButtonOut() {
 
 //Кнопка "Звук"
 function onSoundButtonDown() {
+    sound.play();
     this.isdown = true;
     this.texture = (this.texture === hoverSoundButtonOn) ? pressSoundButtonOn : pressSoundButtonOf;
 }
