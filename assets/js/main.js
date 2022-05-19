@@ -1,6 +1,6 @@
 import { FontStyle } from './font_style.js'
 import { background } from './functions.js'
-// import { Howl, Howler} from '../libs/howler.min.js'
+
 let gamePlace = document.getElementById("gamePlace");
 let game = gamePlace.querySelector("div");
 /*game.style.overflow = "hidden";*/
@@ -19,7 +19,8 @@ const sound = new Howl({
     src: ['assets/sound/speeder.mp3'],
     loop: true,
 });
-Howler.volume(0.3);
+sound.volume(0.5);
+sound.rate(0.85);
 /*createHeader();*/
 
 //----- Шапка ----------------------------------------------------------------------------//
@@ -58,7 +59,6 @@ const activeGrowButton = new PIXI.Texture.from('assets/image/UI/btn_fullscreen_a
 const pressGrowButton = new PIXI.Texture.from('assets/image/UI/btn_fullscreen_press.png');
 const hoverGrowButton = new PIXI.Texture.from('assets/image/UI/btn_fullscreen_hover.png');
 const growButton = new PIXI.Sprite(activeGrowButton);
-// growButton.x = 50;
 growButton.interactive = true;
 growButton
     .on('pointerdown', onGrowButtonDown)
@@ -95,11 +95,17 @@ pauseButton
     .on('pointerover', onPauseButtonOver)
     .on('pointerout', onPauseButtonOut);
 
+growButton.width = 130;
+soundButton.width = 130;
+pauseButton.width = 130; 
 headerMenu.addChild(growButton, soundButton, pauseButton);
 headerMenu.scale.set(0.7);
 headerContainer.addChild(headerMenu);
 // // headerContainer.scale.set(0.68);
-headerMenu.position.set(app.screen.width - 310  , 5);
+
+
+console.log("Ширирина = " + headerMenu.width)
+headerMenu.position.set(app.screen.width - headerMenu.width , 5);
 
 /////////////////////////////////////////////////////////////////////////////////////////
 
