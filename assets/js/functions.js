@@ -1,4 +1,4 @@
- import {app} from './main.js';
+import {app} from './main.js';
 import { FontStyle } from './font_style.js';
 
 let headerContainer ;
@@ -7,31 +7,32 @@ let containerFormIntro;
 export let coin = "0";
 export let playerName = "Alex";
 export let score = 55;
+export let distance = 555;
 
  //----- Создание фона -----//
 export function background() {
-    const mountain = new PIXI.Texture.from("assets/image/Environment/back_rocks.png");
+    const mountain =  PIXI.Texture.from("assets/image/Environment/back_rocks.png");
     const backgroundMountains = new PIXI.TilingSprite(mountain, app.screen.width, app.screen.height - app.screen.height / 2);
     backgroundMountains.tileScale.set(0.5);
     backgroundMountains.y = app.screen.height - backgroundMountains.height;
     app.stage.addChild(backgroundMountains);
 
-    const ice = new PIXI.Texture.from("assets/image/Environment/floor.png");
+    const ice = PIXI.Texture.from("assets/image/Environment/floor.png");
     const iceFloor = new PIXI.TilingSprite(ice, app.screen.width, app.screen.height - app.screen.height * 0.9);
     iceFloor.y = app.screen.height - iceFloor.height;
     app.stage.addChild(iceFloor);
 
-    const sunTexture = new PIXI.Texture.from("assets/image/Environment/bg_sun.png");
+    const sunTexture =  PIXI.Texture.from("assets/image/Environment/bg_sun.png");
     const sunSprite = new PIXI.Sprite(sunTexture);
     app.stage.addChild(sunSprite);
 
-    const treeOne = new PIXI.Texture.from("assets/image/Environment/tree_1.png");
+    const treeOne =  PIXI.Texture.from("assets/image/Environment/tree_1.png");
     const treeOneSprite = new PIXI.Sprite(treeOne);
     treeOneSprite.height = 160;
     treeOneSprite.width = 148;
     treeOneSprite.position.set(20, app.screen.height - treeOneSprite.height * 1.3);
 
-    const treeTwo = new PIXI.Texture.from("assets/image/Environment/tree_2.png");
+    const treeTwo = PIXI.Texture.from("assets/image/Environment/tree_2.png");
     const treeTwoSprite = new PIXI.Sprite(treeTwo);
     treeTwoSprite.height = 103;
     treeTwoSprite.width = 111;
@@ -43,8 +44,6 @@ export function background() {
     treeThreeSprite.position.set(100, app.screen.height - treeThreeSprite.height * 1.45);
 
     app.stage.addChild(treeOneSprite,treeTwoSprite, treeThreeSprite);
-    console.log("Высота F = " + treeThreeSprite.height)
-    console.log("Ширина F = " + treeThreeSprite.width)
 }
 //----- Панель управления -----//
 export function createControlPanel() {
@@ -73,9 +72,9 @@ export function createControlPanel() {
     const coinContainer = new PIXI.Container();
     coinContainer.sortableChildren = true;
     coinContainer.position.set(12, 10);
-    const coinIcon = new PIXI.Sprite.from('assets/image/UI/collect_coin_icon.png');
+    const coinIcon =  PIXI.Sprite.from('assets/image/UI/collect_coin_icon.png');
     coinIcon.zIndex = 1;
-    const formOfCoin = new PIXI.Sprite.from('assets/image/UI/coin_score_plate.png');
+    const formOfCoin =  PIXI.Sprite.from('assets/image/UI/coin_score_plate.png');
     formOfCoin.width = 192;
     formOfCoin.position.set(68, 12);
     const amountOfCoin = new PIXI.Text(coin, new FontStyle('#FFFFFF'));
@@ -96,9 +95,9 @@ export function createControlPanel() {
     //----- Панель  с кнопками ------//
     const headerMenu = new PIXI.Container();
     // кнопка "Развернуть"
-    const activeGrowButton = new PIXI.Texture.from('assets/image/UI/btn_fullscreen_active.png');
-    const pressGrowButton = new PIXI.Texture.from('assets/image/UI/btn_fullscreen_press.png');
-    const hoverGrowButton = new PIXI.Texture.from('assets/image/UI/btn_fullscreen_hover.png');
+    const activeGrowButton =  PIXI.Texture.from('assets/image/UI/btn_fullscreen_active.png');
+    const pressGrowButton =  PIXI.Texture.from('assets/image/UI/btn_fullscreen_press.png');
+    const hoverGrowButton =  PIXI.Texture.from('assets/image/UI/btn_fullscreen_hover.png');
     const growButton = new PIXI.Sprite(activeGrowButton);
     growButton.interactive = true;
     growButton
@@ -108,12 +107,12 @@ export function createControlPanel() {
         .on('pointerout', onGrowButtonOut);
     
     //  кнопка "Звук"
-    const activeSoundButtonOn = new PIXI.Texture.from('assets/image/UI/btn_sound_1_active.png');
-    const pressSoundButtonOn = new PIXI.Texture.from('assets/image/UI/btn_sound_1_press.png');
-    const hoverSoundButtonOn = new PIXI.Texture.from('assets/image/UI/btn_sound_1_hover.png');
-    const activeSoundButtonOf = new PIXI.Texture.from('assets/image/UI/btn_sound_0_active.png');
-    const pressSoundButtonOf = new PIXI.Texture.from('assets/image/UI/btn_sound_0_press.png');
-    const hoverSoundButtonOf = new PIXI.Texture.from('assets/image/UI/btn_sound_0_hover.png');
+    const activeSoundButtonOn =  PIXI.Texture.from('assets/image/UI/btn_sound_1_active.png');
+    const pressSoundButtonOn =  PIXI.Texture.from('assets/image/UI/btn_sound_1_press.png');
+    const hoverSoundButtonOn =  PIXI.Texture.from('assets/image/UI/btn_sound_1_hover.png');
+    const activeSoundButtonOf =  PIXI.Texture.from('assets/image/UI/btn_sound_0_active.png');
+    const pressSoundButtonOf =  PIXI.Texture.from('assets/image/UI/btn_sound_0_press.png');
+    const hoverSoundButtonOf =  PIXI.Texture.from('assets/image/UI/btn_sound_0_hover.png');
     const soundButton = new PIXI.Sprite(activeSoundButtonOf);
     soundButton.x = 150;
     soundButton.interactive = true;
@@ -124,9 +123,9 @@ export function createControlPanel() {
         .on('pointerout', onSoundButtonOut);
     
     // кнопка "Пауза"
-    const activePauseButton = new PIXI.Texture.from('assets/image/UI/btn_pause_active.png');
-    const pressPauseButton = new PIXI.Texture.from('assets/image/UI/btn_pause_press.png');
-    const hoverPauseButton = new PIXI.Texture.from('assets/image/UI/btn_pause_hover.png');
+    const activePauseButton =  PIXI.Texture.from('assets/image/UI/btn_pause_active.png');
+    const pressPauseButton =  PIXI.Texture.from('assets/image/UI/btn_pause_press.png');
+    const hoverPauseButton =  PIXI.Texture.from('assets/image/UI/btn_pause_hover.png');
     const pauseButton = new PIXI.Sprite(activePauseButton);
     pauseButton.x = 300;
     pauseButton.interactive = true;
@@ -192,7 +191,7 @@ function onSoundButtonOut() {
     this.isOver = false;
     this.texture = (this.texture === hoverSoundButtonOn) ? activeSoundButtonOn : activeSoundButtonOf;
 }
-
+//кнопка "Пауза" 
 function onPauseButtonDown() {
     this.isdown = true;
     this.texture = pressPauseButton;
@@ -214,13 +213,13 @@ function onPauseButtonOut() {
     this.texture = activePauseButton;
 }
 }
-//-----Фарма "Начало игры" -----//
+//-----Форма "Начало игры" -----//
 export function crateFormIntro(){
 containerFormIntro = new PIXI.Container();
 containerFormIntro.x = app.screen.width / 2;
 containerFormIntro.y = app.screen.height / 2;
 app.stage.addChild(containerFormIntro);
-
+containerFormIntro.visible = false; //<--------------пока срыл интро;
 //форма интро
 const formIntro = PIXI.Sprite.from('assets/image/UI/info_plate_big.png');
 formIntro.scale.set(0.67);
@@ -259,9 +258,9 @@ userNameBar.addChild(textUserNameBar);
 
 
 //buttons Form
-const buttonMiActive = new PIXI.Texture.from('assets/image/UI/login_button_active.png');
-const buttonMiHover = new PIXI.Texture.from('assets/image/UI/login_button_hover.png');
-const buttonMiPress = new PIXI.Texture.from('assets/image/UI/login_button_press.png');
+const buttonMiActive =  PIXI.Texture.from('assets/image/UI/login_button_active.png');
+const buttonMiHover =  PIXI.Texture.from('assets/image/UI/login_button_hover.png');
+const buttonMiPress =  PIXI.Texture.from('assets/image/UI/login_button_press.png');
 const buttonMi = new PIXI.Sprite(buttonMiActive);
 buttonMi.anchor.set(0.5);
 buttonMi.y = -65;
@@ -273,9 +272,9 @@ buttonMi
     .on('pointerout', onMiButtonOut);
 formIntro.addChild(buttonMi);
 
-const buttonPlayActive = new PIXI.Texture.from('assets/image/UI/play_button_active.png');
-const buttonPlayHover = new PIXI.Texture.from('assets/image/UI/play_button_hover.png');
-const buttonPlayPress = new PIXI.Texture.from('assets/image/UI/play_button_press.png');
+const buttonPlayActive =  PIXI.Texture.from('assets/image/UI/play_button_active.png');
+const buttonPlayHover =  PIXI.Texture.from('assets/image/UI/play_button_hover.png');
+const buttonPlayPress =  PIXI.Texture.from('assets/image/UI/play_button_press.png');
 const buttonPlay = new PIXI.Sprite.from(buttonPlayActive);
 buttonPlay.anchor.set(0.5);
 buttonPlay.x = 163;
@@ -288,9 +287,9 @@ buttonPlay
     .on('pointerout', onPlayButtonOut);
 formIntro.addChild(buttonPlay);
 
-const buttonLeadBoardActive = new PIXI.Texture.from('assets/image/UI/leadboard_button_active.png');
-const buttonLeadBoardHover = new PIXI.Texture.from('assets/image/UI/leadboard_button_hover.png');
-const buttonLeadBoardPress = new PIXI.Texture.from('assets/image/UI/leadboard_button_press.png');
+const buttonLeadBoardActive =  PIXI.Texture.from('assets/image/UI/leadboard_button_active.png');
+const buttonLeadBoardHover =  PIXI.Texture.from('assets/image/UI/leadboard_button_hover.png');
+const buttonLeadBoardPress =  PIXI.Texture.from('assets/image/UI/leadboard_button_press.png');
 const buttonLeadBoard = new PIXI.Sprite.from(buttonLeadBoardActive);
 buttonLeadBoard.anchor.set(0.5);
 buttonLeadBoard.x = -163;
@@ -395,6 +394,10 @@ function onLeadBoardButtonOut() {
     }
     this.texture = buttonLeadBoardActive;
 }
+}
+//-----Форма " Окончание игры"
+export function crateFormGameOver(){
+
 }
 
 
