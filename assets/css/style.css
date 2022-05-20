@@ -6,7 +6,6 @@
       height: 100%;
       padding: 0;
       margin: 0;
-      background-color: #5098C8;
       background-size: 3000px;
       background-repeat: repeat;
       background-image: url(../image/xiaomi_back.jpg);
@@ -16,7 +15,6 @@
       width: 1280px;
       height: 100%;
       margin: 0 auto;
-      /* background-color: blanchedalmond; */
       position: relative;
     }
     .header {
