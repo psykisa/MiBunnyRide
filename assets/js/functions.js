@@ -7,7 +7,7 @@ let containerFormIntro;
 export let coin = "0";
 export let playerName = "Alex";
 export let score = 55;
-export let distance = 555;
+export let distance = 0;
 
  //----- Создание фона -----//
 export function background() {
@@ -90,7 +90,7 @@ export function createControlPanel() {
         amountOfCoin.text = coin;
         amountOfCoin.x = formOfCoin.width / 2 - amountOfCoin.width / 2;
     }
-    setCoin(123);
+    setCoin(155);
     
     //----- Панель  с кнопками ------//
     const headerMenu = new PIXI.Container();

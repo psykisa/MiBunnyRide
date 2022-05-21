@@ -42,6 +42,9 @@ app.ticker.add(() => {
     rays.rotation += 0.01 ;
 });
 
+//звезды
+
+
 //фома
 const formGameOver = PIXI.Sprite.from('assets/image/UI/info_plate_big.png');
 formGameOver.scale.set(0.67);
@@ -62,7 +65,7 @@ headerFormGameOver.addChild(textHeaderFormGameOver);
 //очки
 const textRecordFormGameOver = new PIXI.Text(score, new FontStyle("#00FD17", 175, undefined, true));
 textRecordFormGameOver.anchor.set(0.5);
-textRecordFormGameOver.y = -240;
+textRecordFormGameOver.y = -250;
 formGameOver.addChild(textRecordFormGameOver);
 
 //кнопка "OK"
@@ -78,6 +81,29 @@ buttonOk
     .on('pointerover', onButtonOkOver)
     .on('pointerout', onButtonOkOut);
 formGameOver.addChild(buttonOk);
+
+const resultContainer = new PIXI.Container();
+resultContainer.x = formGameOver.width;
+//монеты
+const coinIconGameOver = PIXI.Sprite.from("assets/image/UI/collect_coin_icon.png");
+const textCoinFormGameOver = new PIXI.Text(coin, new FontStyle("#F4AD25", 100, undefined, true));
+resultContainer.addChild(coinIconGameOver, textCoinFormGameOver);
+formGameOver.addChild(resultContainer);
+resultContainer.position.set(-275, -115)
+textCoinFormGameOver.x = 280;
+
+// дистанция
+const distanceIconGameOver = PIXI.Sprite.from("assets/image/UI/collect_distance_icon.png");
+const textDistanceFormGameOver = new PIXI.Text(distance + " м", new FontStyle("#9AC6FF", 100, undefined, true));
+resultContainer.addChild(distanceIconGameOver, textDistanceFormGameOver);
+console.log("Данные1 : " + textDistanceFormGameOver.width);//<-----------считалка
+distanceIconGameOver.x = -15;
+distanceIconGameOver.y = 165;
+textDistanceFormGameOver.y = 165;
+// textDistanceFormGameOver.x = 280;
+textDistanceFormGameOver.x = textDistanceFormGameOver.width * 1.7;
+
+
 //----- События формы "Окончание игры" -----//
 function onButtonOkPress() {
     this.isdown = true;
