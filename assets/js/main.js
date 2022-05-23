@@ -1,5 +1,17 @@
+
+//? НЕ ЗАБЫТЬ!!! 
+//TODO Сделать расширение экрана, подключить шрифт из CSS
+
 import { FontStyle } from './font_style.js'
-import { background, createControlPanel, crateFormIntro, score, coin , distance} from './functions.js'
+import {
+    background,
+    createControlPanel,
+    createFormIntro,
+    createFormGameOver,
+    createButtonOk,
+    containerFormIntro,
+    createResultsTable
+} from './functions.js'
 
 let gamePlace = document.getElementById("gamePlace");
 let game = gamePlace.querySelector("div");
@@ -15,117 +27,161 @@ app.stage.interactive = true;
 app.stage.cursor = "pointer";
 game.appendChild(app.view);
 
-
-// console.log("Ширина M = " + mask.width);
-// console.log("Высота M = " + mask.height);
-// console.log("Данные : " + mask.parent);
-
 background();
 createControlPanel();
-crateFormIntro();
-//----- Шапка ----------------------------------------------------------------------------//
-//----- ФОРМЫ -------------------------------------------------------------------------//
-let conteinerFormGameOver = new PIXI.Container();
-app.stage.addChild(conteinerFormGameOver);
-conteinerFormGameOver.x = app.screen.width / 2;
-conteinerFormGameOver.y = app.screen.height / 2;
+createFormIntro();
+createFormGameOver();
 
-conteinerFormGameOver.visible = true;
+export let containerFormLeaderBoard;
+let namePeriod = 0;
 
+containerFormLeaderBoard = new PIXI.Container()
+app.stage.addChild(containerFormLeaderBoard);
+containerFormLeaderBoard.x = app.screen.width / 2 - containerFormLeaderBoard.width / 2;
+containerFormLeaderBoard.y = app.screen.height / 2 - containerFormLeaderBoard.height / 2;
 
-//лучи
-const rays = PIXI.Sprite.from('assets/image/UI/rays.png');
-conteinerFormGameOver.addChild(rays);
-rays.anchor.set(0.5);
-rays.scale.set(0.6);
-app.ticker.add(() => {
-    rays.rotation += 0.01 ;
-});
+const formLeaderBoard = PIXI.Sprite.from('assets/image/UI/info_plate_big.png');
+formLeaderBoard.scale.set(0.67);
+formLeaderBoard.anchor.set(0.5);
+formLeaderBoard.width = 505;
+formLeaderBoard.height = 618;
+containerFormLeaderBoard.addChild(formLeaderBoard);
 
-//звезды
+//Header
+const headerFormLeaderBoard = PIXI.Sprite.from('assets/image/UI/header_info_plate.png');
+headerFormLeaderBoard.anchor.set(0.5);
+headerFormLeaderBoard.y = -407;
+formLeaderBoard.addChild(headerFormLeaderBoard);
 
+const textFormLeaderBoard = new PIXI.Text("Таблица рекордов:", new FontStyle("#003D71"));
+textFormLeaderBoard.anchor.set(0.5);
+textFormLeaderBoard.y = -10;
+headerFormLeaderBoard.addChild(textFormLeaderBoard);
 
-//фома
-const formGameOver = PIXI.Sprite.from('assets/image/UI/info_plate_big.png');
-formGameOver.scale.set(0.67);
-conteinerFormGameOver.addChild(formGameOver);
-formGameOver.anchor.set(0.5);
+//Кнопка "Ок"
+let buttonOkFormLeaderBoard = createButtonOk()
+formLeaderBoard.addChild(buttonOkFormLeaderBoard);
+buttonOkFormLeaderBoard.on('pointerdown', onButtonOkPressLeaderBoard)
 
-//header
-const headerFormGameOver = PIXI.Sprite.from('assets/image/UI/header_info_plate.png');
-headerFormGameOver.anchor.set(0.5);
-headerFormGameOver.y = -407;
-formGameOver.addChild(headerFormGameOver);
+//Период
+let massivePeriod = ['Вce время', 'Месяц', 'Неделя'];
+let periodFormLeaderBoard = new PIXI.Text(massivePeriod[namePeriod], new FontStyle('#FF6800', 65, undefined, true));
+formLeaderBoard.addChild(periodFormLeaderBoard);
+periodFormLeaderBoard.anchor.set(0.47, 4.1);
 
-const textHeaderFormGameOver = new PIXI.Text("Твои рекорды:", new FontStyle("#003D71"));
-textHeaderFormGameOver.anchor.set(0.5);
-textHeaderFormGameOver.y = -10;
-headerFormGameOver.addChild(textHeaderFormGameOver);
+//Кнопки "Вперед" - "Назад"
+const arrowActive = PIXI.Texture.from('assets/image/UI/arrow_btn_active.png');
+const arrowHover = PIXI.Texture.from('assets/image/UI/arrow_btn_hover.png');
+const arrowPress = PIXI.Texture.from('assets/image/UI/arrow_btn_press.png');
+const arrowButtonForward = new PIXI.Sprite(arrowActive);
+arrowButtonForward.interactive = true;
+arrowButtonForward
+    .on('pointerdown', onArrowButtonForwardDown)
+    .on('pointerup', onArrowButtonForwardUp)
+    .on('pointerover', onArrowButtonForwardOver)
+    .on('pointerout', onArrowButtonForwardOut);
 
-//очки
-const textRecordFormGameOver = new PIXI.Text(score, new FontStyle("#00FD17", 175, undefined, true));
-textRecordFormGameOver.anchor.set(0.5);
-textRecordFormGameOver.y = -250;
-formGameOver.addChild(textRecordFormGameOver);
+arrowButtonForward.scale.set(1);
+arrowButtonForward.position.set(240, -345)
 
-//кнопка "OK"
-const buttonOkActive = PIXI.Texture.from('assets/image/UI/ok_button_active.png');
-const buttonOkPress = PIXI.Texture.from('assets/image/UI/ok_button_press.png');
-const buttonOkHover = PIXI.Texture.from('assets/image/UI/ok_button_hover.png');
-const buttonOk = new PIXI.Sprite(buttonOkActive);
-buttonOk.anchor.set(0.5, -2.15);
-buttonOk.interactive = true;
-buttonOk
-    .on('pointerdown', onButtonOkPress)
-    .on('pointerup', onButtonOkUp)
-    .on('pointerover', onButtonOkOver)
-    .on('pointerout', onButtonOkOut);
-formGameOver.addChild(buttonOk);
+const arrowButtonBack = new PIXI.Sprite(arrowActive);
+arrowButtonBack.interactive = true;
+arrowButtonBack
+    .on('pointerdown', onArrowButtonBackDown)
+    .on('pointerup', onArrowButtonForwardUp)
+    .on('pointerover', onArrowButtonForwardOver)
+    .on('pointerout', onArrowButtonForwardOut);
 
-const resultContainer = new PIXI.Container();
-resultContainer.x = formGameOver.width;
-//монеты
-const coinIconGameOver = PIXI.Sprite.from("assets/image/UI/collect_coin_icon.png");
-const textCoinFormGameOver = new PIXI.Text(coin, new FontStyle("#F4AD25", 100, undefined, true));
-resultContainer.addChild(coinIconGameOver, textCoinFormGameOver);
-formGameOver.addChild(resultContainer);
-resultContainer.position.set(-275, -115)
-textCoinFormGameOver.x = 280;
+arrowButtonBack.scale.set(1);
+arrowButtonBack.rotation = 1.06;
+arrowButtonBack.position.set(-240, -345)
+formLeaderBoard.addChild(arrowButtonForward, arrowButtonBack);
 
-// дистанция
-const distanceIconGameOver = PIXI.Sprite.from("assets/image/UI/collect_distance_icon.png");
-const textDistanceFormGameOver = new PIXI.Text(distance + " м", new FontStyle("#9AC6FF", 100, undefined, true));
-resultContainer.addChild(distanceIconGameOver, textDistanceFormGameOver);
-console.log("Данные1 : " + textDistanceFormGameOver.width);//<-----------считалка
-distanceIconGameOver.x = -15;
-distanceIconGameOver.y = 165;
-textDistanceFormGameOver.y = 165;
-// textDistanceFormGameOver.x = 280;
-textDistanceFormGameOver.x = textDistanceFormGameOver.width * 1.7;
+//-----Таблица результатов
 
+let arrayGamers = [
+    { name: "Anna", score: 12345 },
+    { name: "Alex", score: 1234 },
+    { name: "Alice", score: 123 },
+    { name: "Петр", score: 315165 },
+    { name: "Алексей", score: 58615 },
+    { name: "Вадим", score: 6161 },
+    { name: "Женя", score: 213 },
+    { name: "Игорь", score: 66165 },
+    { name: "Вячеслав", score: 12634 },
+    { name: "Александр", score: 6515 },
+];
 
-//----- События формы "Окончание игры" -----//
-function onButtonOkPress() {
+let emptyArrayGamers = [
+    { name: "-", score: "-" },
+    { name: "-", score: "-" },
+    { name: "-", score: "-" },
+    { name: "-", score: "-" },
+    { name: "-", score: "-" },
+    { name: "-", score: "-" },
+    { name: "-", score: "-" },
+    { name: "-", score: "-" },
+    { name: "-", score: "-" },
+    { name: "-", score: "-" },
+]
+
+let resultsTable = createResultsTable(arrayGamers);
+formLeaderBoard.addChild(resultsTable);
+// console.log("Данные1 : " + nameGamers.height);       //<------------------------считалка
+
+//Событие при нажатии на кнопку "ОК"
+function onButtonOkPressLeaderBoard() {
+    const buttonOkPress = PIXI.Texture.from('assets/image/UI/ok_button_press.png');
     this.isdown = true;
     this.texture = buttonOkPress;
+    containerFormLeaderBoard.visible = false;
+    containerFormIntro.visible = true;
+    namePeriod = 0
+    periodFormLeaderBoard.text = massivePeriod[namePeriod]
+}
+//События кнопок "Вперед" и "Назад"
+function onArrowButtonForwardDown() {
+    this.isdown = true;
+    this.texture = arrowPress;
+
+    periodFormLeaderBoard.text = massivePeriod[++namePeriod];
+    if (namePeriod == 3) {
+        namePeriod = 0;
+        periodFormLeaderBoard.text = massivePeriod[namePeriod];
+    }
 }
 
-function onButtonOkUp() {
+function onArrowButtonForwardUp() {
     this.isdown = false;
-    if (this.isOver)
-        this.texture = buttonOkHover;
+    if (this.isOver) {
+        this.texture = arrowHover;
+    }
 }
 
-function onButtonOkOver() {
+function onArrowButtonForwardOver() {
     this.isOver = true;
-    this.texture = buttonOkHover;
+    if (this.isdown) {
+        return;
+    }
+    this.texture = arrowHover;
 }
 
-function onButtonOkOut() {
+function onArrowButtonForwardOut() {
     this.isOver = false;
-    this.texture = buttonOkActive;
+    if (this.isdown) {
+        return;
+    }
+    this.texture = arrowActive;
 }
 
-
-//----- События панели управления -----/
-//----- Cобытия форм -----//
+function onArrowButtonBackDown() {
+    this.isdown = true;
+    this.texture = arrowPress;
+    if (namePeriod >= 0) {
+        periodFormLeaderBoard.text = massivePeriod[--namePeriod];
+    }
+    if (namePeriod < 0) {
+        namePeriod = massivePeriod.length - 1;
+        periodFormLeaderBoard.text = massivePeriod[namePeriod];
+    }
+}

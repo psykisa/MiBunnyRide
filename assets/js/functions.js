@@ -1,13 +1,14 @@
-import {app} from './main.js';
+import {app, containerFormLeaderBoard} from './main.js';
 import { FontStyle } from './font_style.js';
 
 let headerContainer ;
-let containerFormIntro;
+export let containerFormIntro;
+let containerFormGameOver;
 
-export let coin = "0";
 export let playerName = "Alex";
 export let score = 55;
-export let distance = 0;
+export let coin = "0"
+export let distance = "0";
 
  //----- Создание фона -----//
 export function background() {
@@ -78,7 +79,7 @@ export function createControlPanel() {
     formOfCoin.width = 192;
     formOfCoin.position.set(68, 12);
     const amountOfCoin = new PIXI.Text(coin, new FontStyle('#FFFFFF'));
-    amountOfCoin.x = formOfCoin.width / 2 - amountOfCoin.width / 2;
+    // amountOfCoin.x = formOfCoin.width / 2 - amountOfCoin.width / 2;
     formOfCoin.addChild(amountOfCoin);
     coinContainer.addChild(coinIcon, formOfCoin);
     coinContainer.scale.set(0.7);
@@ -90,7 +91,7 @@ export function createControlPanel() {
         amountOfCoin.text = coin;
         amountOfCoin.x = formOfCoin.width / 2 - amountOfCoin.width / 2;
     }
-    setCoin(155);
+    setCoin(555);
     
     //----- Панель  с кнопками ------//
     const headerMenu = new PIXI.Container();
@@ -214,7 +215,7 @@ function onPauseButtonOut() {
 }
 }
 //-----Форма "Начало игры" -----//
-export function crateFormIntro(){
+export function createFormIntro(){
 containerFormIntro = new PIXI.Container();
 containerFormIntro.x = app.screen.width / 2;
 containerFormIntro.y = app.screen.height / 2;
@@ -302,12 +303,11 @@ buttonLeadBoard
     .on('pointerout', onLeadBoardButtonOut);
 formIntro.addChild(buttonLeadBoard);
 
-//----- Cобытия "Начало" -----//
+//----- Cобытия формы "Начало" -----//
 //события кнопки Mi
 function onMiButtonDown() {
     this.isdown = true;
     this.texture = buttonMiPress;
-    this.alpha = 1;
     document.location.href = 'https://account.xiaomi.com/fe/service/login/password?client_id=2882303761518691426&_ssign=2%26V1_oauth2.0%26mf6HIlHY8a9BU%2BW5INWlitVS1Ho%3D&lsrp_appName=Sign+in+to+%24%7Bmi+bunny+ride%7D%24+with+Mi+Account&_customDisplay=20&scope=1&_locale=en_US&sid=oauth2.0&qs=%253Fcallback%253Dhttps%25253A%25252F%25252Fopen.account.xiaomi.com%25252Fsts%25252Foauth%25253Fsign%25253DczmkxNtqFsVr9MvD95ynqto2jME%2525253D%252526followup%25253Dhttps%2525253A%2525252F%2525252Fopen.account.xiaomi.com%2525252Foauth2%2525252Fauthorize%2525253Fresponse_type%2525253Dtoken%25252526client_id%2525253D2882303761518691426%25252526redirect_uri%2525253Dhttps%252525253A%252525252F%252525252Fmibunnyride.com%252525252F%25252526skip_confirm%2525253Dfalse%252526sid%25253Doauth2.0%2526sid%253Doauth2.0%2526lsrp_appName%253DSign%252520in%252520to%252520%252524%25257Bmi%252520bunny%252520ride%25257D%252524%252520with%252520Mi%252520Account%2526_customDisplay%253D20%2526scope%253D1%2526client_id%253D2882303761518691426%2526_locale%253Den_US%2526_ssign%253D2%252526V1_oauth2.0%252526mf6HIlHY8a9BU%25252BW5INWlitVS1Ho%25253D&callback=https%3A%2F%2Fopen.account.xiaomi.com%2Fsts%2Foauth%3Fsign%3DczmkxNtqFsVr9MvD95ynqto2jME%253D%26followup%3Dhttps%253A%252F%252Fopen.account.xiaomi.com%252Foauth2%252Fauthorize%253Fresponse_type%253Dtoken%2526client_id%253D2882303761518691426%2526redirect_uri%253Dhttps%25253A%25252F%25252Fmibunnyride.com%25252F%2526skip_confirm%253Dfalse%26sid%3Doauth2.0&_sign=2%26V1_oauth2.0%26gmKkXwnELJp7pPtOyTYLaApYCc8%3D&serviceParam=%7B%22checkSafePhone%22%3Afalse%2C%22checkSafeAddress%22%3Afalse%2C%22lsrp_score%22%3A0.0%7D&showActiveX=false&theme=&needTheme=false&bizDeviceType=&scopes=%5B%7B%5C%22level%5C%22%3A1%2C%5C%22name%5C%22%3A%5C%22Mi+Account+info%5C%22%2C%5C%22id%5C%22%3A1%7D%5D';
 }
 
@@ -339,6 +339,7 @@ function onPlayButtonDown() {
     this.isdown = true;
     this.texture = buttonPlayPress;
     containerFormIntro.visible = false;
+    containerFormGameOver.visible = true;
 }
 
 function onPlayButtonUp() {
@@ -369,7 +370,8 @@ function onPlayButtonOut() {
 function onLeadBoardButtonDown() {
     this.isdown = true;
     this.texture = buttonLeadBoardPress;
-    this.alpha = 1;
+    containerFormIntro.visible = false;
+    containerFormLeaderBoard.visible = true;
 }
 
 function onLeadBoardButtonUp() {
@@ -396,16 +398,227 @@ function onLeadBoardButtonOut() {
 }
 }
 //-----Форма " Окончание игры"
-export function crateFormGameOver(){
+export function createFormGameOver(){
+    containerFormGameOver = new PIXI.Container();
+    app.stage.addChild(containerFormGameOver);
+    containerFormGameOver.x = app.screen.width / 2;
+    containerFormGameOver.y = app.screen.height / 2;
+    
+    containerFormGameOver.visible = false;
+    
+    //лучи
+    const rays = PIXI.Sprite.from('assets/image/UI/rays.png');
+    containerFormGameOver.addChild(rays);
+    rays.anchor.set(0.5);
+    rays.scale.set(0.6);
+    app.ticker.add(() => {
+        rays.rotation += 0.01 ;
+    });
+    
+    //звезды
+    const spriteStars = [] ;
+    for (let i = 0; i < 8; i++) {
+        spriteStars[i] = PIXI.Sprite.from('assets/image/UI/star.png');
+        containerFormGameOver.addChild(spriteStars[i]);
+        spriteStars[i].anchor.set(0.5, -1);
+    }
+    
+    spriteStars[0].position.set(-200, 190);
+    spriteStars[0].rotation = 1.1;
+    spriteStars[0].scale.set(0.6);  
+    
+    spriteStars[1].position.set(215, 200);
+    spriteStars[1].rotation = -1.1;
+    spriteStars[1].scale.set(0.5);
+    spriteStars[2].position.set(-220, 10);
+    spriteStars[2].rotation = 1.2;
+    spriteStars[2].scale.set(0.8);
+    spriteStars[3].rotation = - 1.2;
+    spriteStars[3].position.set(250, 60);
+    spriteStars[3].scale.set(0.45);
+    spriteStars[4].position.set(-270, -90);
+    spriteStars[4].rotation = 1.3;
+    spriteStars[4].scale.set(0.4)
+    spriteStars[5].position.set(520, -130);
+    spriteStars[5].rotation = 1.1;
+    spriteStars[5].scale.set(0.8);
+    spriteStars[6].position.set(-170, -220);
+    spriteStars[6].rotation = 1.4;
+    spriteStars[6].scale.set(0.7);
+    spriteStars[7].position.set(430, -255);
+    spriteStars[7].rotation = 1.1;
+    spriteStars[7].scale.set(0.55);
+    
+    //фома
+    const formGameOver = PIXI.Sprite.from('assets/image/UI/info_plate_big.png');
+    formGameOver.scale.set(0.67);
+    containerFormGameOver.addChild(formGameOver);
+    formGameOver.anchor.set(0.5);
+    
+    //header
+    const headerFormGameOver = PIXI.Sprite.from('assets/image/UI/header_info_plate.png');
+    headerFormGameOver.anchor.set(0.5);
+    headerFormGameOver.y = -407;
+    formGameOver.addChild(headerFormGameOver);
+    
+    const textHeaderFormGameOver = new PIXI.Text("Твои рекорды:", new FontStyle("#003D71"));
+    textHeaderFormGameOver.anchor.set(0.5);
+    textHeaderFormGameOver.y = -10;
+    headerFormGameOver.addChild(textHeaderFormGameOver);
+    
+    //очки
+    const textRecordFormGameOver = new PIXI.Text(score, new FontStyle("#00FD17", 175, undefined, true));
+    textRecordFormGameOver.anchor.set(0.5);
+    textRecordFormGameOver.y = -250;
+    formGameOver.addChild(textRecordFormGameOver);
+    
+    let buttonOkFormGameOver = createButtonOk()
+    formGameOver.addChild(buttonOkFormGameOver);
+    buttonOkFormGameOver.on('pointerdown', onButtonOkPressGameOver)
+    function onButtonOkPressGameOver(){
+        const buttonOkPress = PIXI.Texture.from('assets/image/UI/ok_button_press.png');
+        this.isdown = true;
+        this.texture = buttonOkPress;
+        containerFormGameOver.visible = false;
+        containerFormLeaderBoard.visible = true;
+    }
+
+    const resultContainer = new PIXI.Container();
+    resultContainer.x = formGameOver.width;
+    //монеты
+    const coinIconGameOver = PIXI.Sprite.from("assets/image/UI/collect_coin_icon.png");
+    const textCoinFormGameOver = new PIXI.Text(coin, new FontStyle("#F4AD25", 100, undefined, true));
+    resultContainer.addChild(coinIconGameOver, textCoinFormGameOver);
+    formGameOver.addChild(resultContainer);
+    resultContainer.position.set(-275, -115);
+    textCoinFormGameOver.x = 280;
+     textCoinFormGameOver.x = (resultContainer.width - textCoinFormGameOver.width)/2+100 ;
+    
+    //дистанция
+    const distanceIconGameOver = PIXI.Sprite.from("assets/image/UI/collect_distance_icon.png");
+    const textDistanceFormGameOver = new PIXI.Text(distance + " м", new FontStyle("#9AC6FF", 100, undefined, true));
+    resultContainer.addChild(distanceIconGameOver, textDistanceFormGameOver);
+    distanceIconGameOver.x = -15;
+    distanceIconGameOver.y = 165;
+    textDistanceFormGameOver.y = 165;
+    
+    //--- Выравнивание текста "Дистанция"
+    const setDistance = value => {
+        distance = value;
+        textDistanceFormGameOver.text = distance + " м";
+        textDistanceFormGameOver.x = (resultContainer.width - textDistanceFormGameOver.width)/2 + 150;
+    }
+    setDistance(123);
+    
+    //----- События формы "Окончание игры" -----//
+    // function onButtonOkPress() {
+    //     this.isdown = true;
+    //     this.texture = buttonOkPress;
+    // }
+    
+    // function onButtonOkUp() {
+    //     this.isdown = false;
+    //     if (this.isOver)
+    //         this.texture = buttonOkHover;
+    // }
+    
+    // function onButtonOkOver() {
+    //     this.isOver = true;
+    //     this.texture = buttonOkHover;
+    // }
+    
+    // function onButtonOkOut() {
+    //     this.isOver = false;
+    //     this.texture = buttonOkActive;
+    // }
+}
+
+export function createFormLeaderBoard(){
 
 }
 
+//----- Кнопка "OK"
+export function createButtonOk(){ 
+    const buttonOkActive = PIXI.Texture.from('assets/image/UI/ok_button_active.png');
+    const buttonOkHover = PIXI.Texture.from('assets/image/UI/ok_button_hover.png');
+    const buttonOk = new PIXI.Sprite(buttonOkActive);
+    buttonOk.anchor.set(0.5, -2.15);
+    buttonOk.interactive = true;
+    buttonOk
+        // .on('pointerdown', onButtonOkPress)
+        .on('pointerup', onButtonOkUp)
+        .on('pointerover', onButtonOkOver)
+        .on('pointerout', onButtonOkOut);
+ return buttonOk;
 
+//  function onButtonOkPress() {
+//     const buttonOkPress = PIXI.Texture.from('assets/image/UI/ok_button_press.png');
+//     this.isdown = true;
+//     this.texture = buttonOkPress;
+// }
 
+function onButtonOkUp() {
+    this.isdown = false;
+    if (this.isOver)
+        this.texture = buttonOkHover;
+}
 
+function onButtonOkOver() {
+    this.isOver = true;
+    this.texture = buttonOkHover;
+}
 
+function onButtonOkOut() {
+    this.isOver = false;
+    this.texture = buttonOkActive;
+}
+}
 
+//-----Таблица Результатов
+export function createResultsTable(arrayGamers) {
+    const resultsTable = new PIXI.Container();
+    let leadPlaceSrite = [PIXI.Sprite.from("assets/image/UI/place_1.png"),
+    PIXI.Sprite.from("assets/image/UI/place_2.png"),
+    PIXI.Sprite.from("assets/image/UI/place_3.png")];
+    let colorLeadPLace = ["#C16001", "#215DB0", "#8B1B01"];
+    let fontStyleListGamers = new FontStyle("#000", 37);
+    let fontStylePosition = new FontStyle('#FFF', 40);
 
+    for (let i = 0; i < arrayGamers.length; i++) {
+        setTimeout(() => {
+            if (i < 3) {
+                leadPlaceSrite[i].scale.set(1);
+                leadPlaceSrite[i].position.set(-340, -270 + i * 80)
+                let nameLeadGamer = new PIXI.Text(arrayGamers[i].name, new FontStyle(colorLeadPLace[i], 45));
+                nameLeadGamer.position.set(80, 11)
+                leadPlaceSrite[i].addChild(nameLeadGamer);
+                let scoreLeadSprite = PIXI.Sprite.from("assets/image/UI/highleader_scores_plate.png");
+                scoreLeadSprite.position.set(170, -255 + i * 80)
+                let scoreLeadGamers = new PIXI.Text(arrayGamers[i].score, new FontStyle(colorLeadPLace[i], 40));
+                scoreLeadGamers.position.set(30, -2);
+                scoreLeadSprite.addChild(scoreLeadGamers);
+                resultsTable.addChild(leadPlaceSrite[i], scoreLeadSprite);
+            }
+            if (i > 2) {
+                const positionText = new PIXI.Text(i + 1, fontStylePosition);
+                positionText.position.set(-300 - positionText.width / 2, i * positionText.height - 170);
+                resultsTable.addChild(positionText);
+                let nameGamers = PIXI.Sprite.from('assets/image/UI/midleader_name_plate.png');
+                nameGamers.position.set(-265, i * positionText.height - 170);
+                const textNameGamers = new PIXI.Text(arrayGamers[i].name, fontStyleListGamers);
+                textNameGamers.position.set(20, -6);
+                nameGamers.addChild(textNameGamers);
+                let scoreGamers = PIXI.Sprite.from('assets/image/UI/midleader_scores_plate.png');
+                scoreGamers.position.set(178, i * positionText.height - 170);
+                const textScoreGamers = new PIXI.Text(arrayGamers[i].score, fontStyleListGamers);
+                textScoreGamers.position.set(20, -6);
+                scoreGamers.addChild(textScoreGamers);
+                resultsTable.addChild(nameGamers, scoreGamers);
+            }
+        }, 100 * i);
+    }
+    return resultsTable;
+}
 
  //СОБЫТИЯ:
 
