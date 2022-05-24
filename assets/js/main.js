@@ -1,6 +1,6 @@
 
-//? НЕ ЗАБЫТЬ!!! 
-//TODO Сделать расширение экрана, подключить шрифт из CSS
+//? НЕ ЗАБЫТЬ!!!
+//TODO Сделать расширение экрана, подключить шрифт из CSS , разобраться с выводм лидерборда(пушить в массив а потом выводить или каждый раз вызывать create)
 
 import { FontStyle } from './font_style.js'
 import {
@@ -8,9 +8,8 @@ import {
     createControlPanel,
     createFormIntro,
     createFormGameOver,
-    createButtonOk,
-    containerFormIntro,
-    createResultsTable
+    createFormLeaderBoard,
+   
 } from './functions.js'
 
 let gamePlace = document.getElementById("gamePlace");
@@ -31,157 +30,7 @@ background();
 createControlPanel();
 createFormIntro();
 createFormGameOver();
+createFormLeaderBoard();
 
-export let containerFormLeaderBoard;
-let namePeriod = 0;
 
-containerFormLeaderBoard = new PIXI.Container()
-app.stage.addChild(containerFormLeaderBoard);
-containerFormLeaderBoard.x = app.screen.width / 2 - containerFormLeaderBoard.width / 2;
-containerFormLeaderBoard.y = app.screen.height / 2 - containerFormLeaderBoard.height / 2;
-
-const formLeaderBoard = PIXI.Sprite.from('assets/image/UI/info_plate_big.png');
-formLeaderBoard.scale.set(0.67);
-formLeaderBoard.anchor.set(0.5);
-formLeaderBoard.width = 505;
-formLeaderBoard.height = 618;
-containerFormLeaderBoard.addChild(formLeaderBoard);
-
-//Header
-const headerFormLeaderBoard = PIXI.Sprite.from('assets/image/UI/header_info_plate.png');
-headerFormLeaderBoard.anchor.set(0.5);
-headerFormLeaderBoard.y = -407;
-formLeaderBoard.addChild(headerFormLeaderBoard);
-
-const textFormLeaderBoard = new PIXI.Text("Таблица рекордов:", new FontStyle("#003D71"));
-textFormLeaderBoard.anchor.set(0.5);
-textFormLeaderBoard.y = -10;
-headerFormLeaderBoard.addChild(textFormLeaderBoard);
-
-//Кнопка "Ок"
-let buttonOkFormLeaderBoard = createButtonOk()
-formLeaderBoard.addChild(buttonOkFormLeaderBoard);
-buttonOkFormLeaderBoard.on('pointerdown', onButtonOkPressLeaderBoard)
-
-//Период
-let massivePeriod = ['Вce время', 'Месяц', 'Неделя'];
-let periodFormLeaderBoard = new PIXI.Text(massivePeriod[namePeriod], new FontStyle('#FF6800', 65, undefined, true));
-formLeaderBoard.addChild(periodFormLeaderBoard);
-periodFormLeaderBoard.anchor.set(0.47, 4.1);
-
-//Кнопки "Вперед" - "Назад"
-const arrowActive = PIXI.Texture.from('assets/image/UI/arrow_btn_active.png');
-const arrowHover = PIXI.Texture.from('assets/image/UI/arrow_btn_hover.png');
-const arrowPress = PIXI.Texture.from('assets/image/UI/arrow_btn_press.png');
-const arrowButtonForward = new PIXI.Sprite(arrowActive);
-arrowButtonForward.interactive = true;
-arrowButtonForward
-    .on('pointerdown', onArrowButtonForwardDown)
-    .on('pointerup', onArrowButtonForwardUp)
-    .on('pointerover', onArrowButtonForwardOver)
-    .on('pointerout', onArrowButtonForwardOut);
-
-arrowButtonForward.scale.set(1);
-arrowButtonForward.position.set(240, -345)
-
-const arrowButtonBack = new PIXI.Sprite(arrowActive);
-arrowButtonBack.interactive = true;
-arrowButtonBack
-    .on('pointerdown', onArrowButtonBackDown)
-    .on('pointerup', onArrowButtonForwardUp)
-    .on('pointerover', onArrowButtonForwardOver)
-    .on('pointerout', onArrowButtonForwardOut);
-
-arrowButtonBack.scale.set(1);
-arrowButtonBack.rotation = 1.06;
-arrowButtonBack.position.set(-240, -345)
-formLeaderBoard.addChild(arrowButtonForward, arrowButtonBack);
-
-//-----Таблица результатов
-
-let arrayGamers = [
-    { name: "Anna", score: 12345 },
-    { name: "Alex", score: 1234 },
-    { name: "Alice", score: 123 },
-    { name: "Петр", score: 315165 },
-    { name: "Алексей", score: 58615 },
-    { name: "Вадим", score: 6161 },
-    { name: "Женя", score: 213 },
-    { name: "Игорь", score: 66165 },
-    { name: "Вячеслав", score: 12634 },
-    { name: "Александр", score: 6515 },
-];
-
-let emptyArrayGamers = [
-    { name: "-", score: "-" },
-    { name: "-", score: "-" },
-    { name: "-", score: "-" },
-    { name: "-", score: "-" },
-    { name: "-", score: "-" },
-    { name: "-", score: "-" },
-    { name: "-", score: "-" },
-    { name: "-", score: "-" },
-    { name: "-", score: "-" },
-    { name: "-", score: "-" },
-]
-
-let resultsTable = createResultsTable(arrayGamers);
-formLeaderBoard.addChild(resultsTable);
-// console.log("Данные1 : " + nameGamers.height);       //<------------------------считалка
-
-//Событие при нажатии на кнопку "ОК"
-function onButtonOkPressLeaderBoard() {
-    const buttonOkPress = PIXI.Texture.from('assets/image/UI/ok_button_press.png');
-    this.isdown = true;
-    this.texture = buttonOkPress;
-    containerFormLeaderBoard.visible = false;
-    containerFormIntro.visible = true;
-    namePeriod = 0
-    periodFormLeaderBoard.text = massivePeriod[namePeriod]
-}
-//События кнопок "Вперед" и "Назад"
-function onArrowButtonForwardDown() {
-    this.isdown = true;
-    this.texture = arrowPress;
-
-    periodFormLeaderBoard.text = massivePeriod[++namePeriod];
-    if (namePeriod == 3) {
-        namePeriod = 0;
-        periodFormLeaderBoard.text = massivePeriod[namePeriod];
-    }
-}
-
-function onArrowButtonForwardUp() {
-    this.isdown = false;
-    if (this.isOver) {
-        this.texture = arrowHover;
-    }
-}
-
-function onArrowButtonForwardOver() {
-    this.isOver = true;
-    if (this.isdown) {
-        return;
-    }
-    this.texture = arrowHover;
-}
-
-function onArrowButtonForwardOut() {
-    this.isOver = false;
-    if (this.isdown) {
-        return;
-    }
-    this.texture = arrowActive;
-}
-
-function onArrowButtonBackDown() {
-    this.isdown = true;
-    this.texture = arrowPress;
-    if (namePeriod >= 0) {
-        periodFormLeaderBoard.text = massivePeriod[--namePeriod];
-    }
-    if (namePeriod < 0) {
-        namePeriod = massivePeriod.length - 1;
-        periodFormLeaderBoard.text = massivePeriod[namePeriod];
-    }
-}
+console.log("Данные 0 : " + namePeriod) //<--------------------------------------считалка
