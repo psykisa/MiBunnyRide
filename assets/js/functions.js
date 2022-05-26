@@ -1,7 +1,8 @@
 import { app } from './main.js';
 import { FontStyle } from './font_style.js';
 
-let headerContainer;
+let containerSetup;
+let containerHeader;
 let containerFormIntro;
 let containerFormGameOver;
 let containerFormLeaderBoard;
@@ -11,22 +12,29 @@ export let score = 55;
 export let coin = "0"
 export let distance = "0";
 
-//----- Создание фона -----//
-export function background() {
+//----- Setup -----//
+export function setup() {
+    containerSetup = new PIXI.Container()
+
     const mountain = PIXI.Texture.from("assets/image/Environment/back_rocks.png");
     const backgroundMountains = new PIXI.TilingSprite(mountain, app.screen.width, app.screen.height - app.screen.height / 2);
     backgroundMountains.tileScale.set(0.5);
     backgroundMountains.y = app.screen.height - backgroundMountains.height;
-    app.stage.addChild(backgroundMountains);
 
     const ice = PIXI.Texture.from("assets/image/Environment/floor.png");
     const iceFloor = new PIXI.TilingSprite(ice, app.screen.width, app.screen.height - app.screen.height * 0.9);
     iceFloor.y = app.screen.height - iceFloor.height;
-    app.stage.addChild(iceFloor);
 
     const sunTexture = PIXI.Texture.from("assets/image/Environment/bg_sun.png");
     const sunSprite = new PIXI.Sprite(sunTexture);
-    app.stage.addChild(sunSprite);
+    sunSprite.width = 415;
+    sunSprite.height = 415;
+
+
+    const airshipSprite = PIXI.Sprite.from("assets/image/Environment/airship.png");
+    airshipSprite.height = 90;
+    airshipSprite.width = 174;
+    airshipSprite.position.set(10, 150);
 
     const treeOne = PIXI.Texture.from("assets/image/Environment/tree_1.png");
     const treeOneSprite = new PIXI.Sprite(treeOne);
@@ -36,21 +44,38 @@ export function background() {
 
     const treeTwo = PIXI.Texture.from("assets/image/Environment/tree_2.png");
     const treeTwoSprite = new PIXI.Sprite(treeTwo);
-    treeTwoSprite.height = 103;
-    treeTwoSprite.width = 111;
+    treeTwoSprite.height = 104;
+    treeTwoSprite.width = 112;
     treeTwoSprite.position.set(app.screen.width - treeTwoSprite.width * 1.5, app.screen.height - treeTwoSprite.height * 1.5);
 
     const treeThreeSprite = new PIXI.Sprite(treeTwo);
-    treeThreeSprite.height = 103;
-    treeThreeSprite.width = 111;
+    treeThreeSprite.height = 104;
+    treeThreeSprite.width = 112;
     treeThreeSprite.position.set(100, app.screen.height - treeThreeSprite.height * 1.45);
 
-    app.stage.addChild(treeOneSprite, treeTwoSprite, treeThreeSprite);
+    const bunnySprite = PIXI.Sprite.from("assets/image/Characters/mi_bunny_idle_03.png");
+    bunnySprite.height = 150;
+    bunnySprite.width = 150;
+    bunnySprite.position.set(250, app.screen.height - bunnySprite.height * 1.23);
+    containerSetup.addChild(backgroundMountains,
+        iceFloor,
+        sunSprite,
+        airshipSprite,
+        treeOneSprite,
+        treeTwoSprite,
+        treeThreeSprite,
+        bunnySprite);
+    app.stage.addChild(containerSetup);
+    createControlPanel();
+    createFormIntro()
+    createFormGameOver();
+    createFormLeaderBoard();
+    //game();
 }
 //----- Панель управления -----//
 export function createControlPanel() {
-    headerContainer = new PIXI.Container();
-    app.stage.addChild(headerContainer);
+    containerHeader = new PIXI.Container();
+    app.stage.addChild(containerHeader);
 
     //-----Пауза-----//
     let pauseMask = new PIXI.Sprite(PIXI.Texture.WHITE);
@@ -84,7 +109,7 @@ export function createControlPanel() {
     formOfCoin.addChild(amountOfCoin);
     coinContainer.addChild(coinIcon, formOfCoin);
     coinContainer.scale.set(0.7);
-    headerContainer.addChild(coinContainer);
+    containerHeader.addChild(coinContainer);
 
     //------------ Количество монет, выравнивание текста в поле с монетами ----------//
     const setCoin = value => {
@@ -142,7 +167,7 @@ export function createControlPanel() {
     pauseButton.width = 130;
     headerMenu.addChild(growButton, soundButton, pauseButton);
     headerMenu.scale.set(0.7);
-    headerContainer.addChild(headerMenu);
+    containerHeader.addChild(headerMenu);
     headerMenu.position.set(app.screen.width - headerMenu.width, 5);
 
     //----- События панели управления -----//
@@ -193,7 +218,7 @@ export function createControlPanel() {
         this.isOver = false;
         this.texture = (this.texture === hoverSoundButtonOn) ? activeSoundButtonOn : activeSoundButtonOf;
     }
-    //кнопка "Пауза" 
+    //кнопка "Пауза"
     function onPauseButtonDown() {
         this.isdown = true;
         this.texture = pressPauseButton;
@@ -226,7 +251,6 @@ export function createFormIntro() {
     formIntro.scale.set(0.67);
     containerFormIntro.addChild(formIntro);
     formIntro.anchor.set(0.5);
-
     //рекорды
     const textRecord = new PIXI.Text('Рекорд: ' + score, new FontStyle("#00FD17", 67, undefined, true));
     textRecord.anchor.set(0.5);
@@ -309,6 +333,7 @@ export function createFormIntro() {
         this.isdown = true;
         this.texture = buttonMiPress;
         document.location.href = 'https://account.xiaomi.com/fe/service/login/password?client_id=2882303761518691426&_ssign=2%26V1_oauth2.0%26mf6HIlHY8a9BU%2BW5INWlitVS1Ho%3D&lsrp_appName=Sign+in+to+%24%7Bmi+bunny+ride%7D%24+with+Mi+Account&_customDisplay=20&scope=1&_locale=en_US&sid=oauth2.0&qs=%253Fcallback%253Dhttps%25253A%25252F%25252Fopen.account.xiaomi.com%25252Fsts%25252Foauth%25253Fsign%25253DczmkxNtqFsVr9MvD95ynqto2jME%2525253D%252526followup%25253Dhttps%2525253A%2525252F%2525252Fopen.account.xiaomi.com%2525252Foauth2%2525252Fauthorize%2525253Fresponse_type%2525253Dtoken%25252526client_id%2525253D2882303761518691426%25252526redirect_uri%2525253Dhttps%252525253A%252525252F%252525252Fmibunnyride.com%252525252F%25252526skip_confirm%2525253Dfalse%252526sid%25253Doauth2.0%2526sid%253Doauth2.0%2526lsrp_appName%253DSign%252520in%252520to%252520%252524%25257Bmi%252520bunny%252520ride%25257D%252524%252520with%252520Mi%252520Account%2526_customDisplay%253D20%2526scope%253D1%2526client_id%253D2882303761518691426%2526_locale%253Den_US%2526_ssign%253D2%252526V1_oauth2.0%252526mf6HIlHY8a9BU%25252BW5INWlitVS1Ho%25253D&callback=https%3A%2F%2Fopen.account.xiaomi.com%2Fsts%2Foauth%3Fsign%3DczmkxNtqFsVr9MvD95ynqto2jME%253D%26followup%3Dhttps%253A%252F%252Fopen.account.xiaomi.com%252Foauth2%252Fauthorize%253Fresponse_type%253Dtoken%2526client_id%253D2882303761518691426%2526redirect_uri%253Dhttps%25253A%25252F%25252Fmibunnyride.com%25252F%2526skip_confirm%253Dfalse%26sid%3Doauth2.0&_sign=2%26V1_oauth2.0%26gmKkXwnELJp7pPtOyTYLaApYCc8%3D&serviceParam=%7B%22checkSafePhone%22%3Afalse%2C%22checkSafeAddress%22%3Afalse%2C%22lsrp_score%22%3A0.0%7D&showActiveX=false&theme=&needTheme=false&bizDeviceType=&scopes=%5B%7B%5C%22level%5C%22%3A1%2C%5C%22name%5C%22%3A%5C%22Mi+Account+info%5C%22%2C%5C%22id%5C%22%3A1%7D%5D';
+
     }
 
     function onMiButtonUp() {
@@ -513,180 +538,178 @@ export function createFormGameOver() {
 //-----Форма "Результаты"
 export function createFormLeaderBoard() {
 
-let namePeriod = 0;
+    let namePeriod = 0;
 
-containerFormLeaderBoard = new PIXI.Container()
-app.stage.addChild(containerFormLeaderBoard);
-containerFormLeaderBoard.visible = false;
-containerFormLeaderBoard.x = app.screen.width / 2 - containerFormLeaderBoard.width / 2;
-containerFormLeaderBoard.y = app.screen.height / 2 - containerFormLeaderBoard.height / 2;
-
-const formLeaderBoard = PIXI.Sprite.from('assets/image/UI/info_plate_big.png');
-formLeaderBoard.scale.set(0.67);
-formLeaderBoard.anchor.set(0.5);
-formLeaderBoard.width = 505;
-formLeaderBoard.height = 618;
-containerFormLeaderBoard.addChild(formLeaderBoard);
-
-//Header
-const headerFormLeaderBoard = PIXI.Sprite.from('assets/image/UI/header_info_plate.png');
-headerFormLeaderBoard.anchor.set(0.5);
-headerFormLeaderBoard.y = -407;
-formLeaderBoard.addChild(headerFormLeaderBoard);
-
-const textFormLeaderBoard = new PIXI.Text("Таблица рекордов:", new FontStyle("#003D71"));
-textFormLeaderBoard.anchor.set(0.5);
-textFormLeaderBoard.y = -10;
-headerFormLeaderBoard.addChild(textFormLeaderBoard);
-
-//Кнопка "Ок"
-let buttonOkFormLeaderBoard = createButtonOk()
-formLeaderBoard.addChild(buttonOkFormLeaderBoard);
-buttonOkFormLeaderBoard.on('pointerdown', onButtonOkPressLeaderBoard)
-
-//Период
-let massivePeriod = ['Вce время', 'Месяц', 'Неделя'];
-let periodFormLeaderBoard = new PIXI.Text(massivePeriod[namePeriod], new FontStyle('#FF6800', 65, undefined, true));
-formLeaderBoard.addChild(periodFormLeaderBoard);
-periodFormLeaderBoard.anchor.set(0.47, 4.1);
-
-//Кнопки "Вперед" - "Назад"
-const arrowActive = PIXI.Texture.from('assets/image/UI/arrow_btn_active.png');
-const arrowHover = PIXI.Texture.from('assets/image/UI/arrow_btn_hover.png');
-const arrowPress = PIXI.Texture.from('assets/image/UI/arrow_btn_press.png');
-const arrowButtonForward = new PIXI.Sprite(arrowActive);
-arrowButtonForward.interactive = true;
-arrowButtonForward
-    .on('pointerdown', onArrowButtonForwardDown)
-    .on('pointerup', onArrowButtonForwardUp)
-    .on('pointerover', onArrowButtonForwardOver)
-    .on('pointerout', onArrowButtonForwardOut);
-
-arrowButtonForward.scale.set(1);
-arrowButtonForward.position.set(240, -345)
-
-const arrowButtonBack = new PIXI.Sprite(arrowActive);
-arrowButtonBack.interactive = true;
-arrowButtonBack
-    .on('pointerdown', onArrowButtonBackDown)
-    .on('pointerup', onArrowButtonForwardUp)
-    .on('pointerover', onArrowButtonForwardOver)
-    .on('pointerout', onArrowButtonForwardOut);
-
-arrowButtonBack.scale.set(1);
-arrowButtonBack.rotation = 1.06;
-arrowButtonBack.position.set(-240, -345)
-formLeaderBoard.addChild(arrowButtonForward, arrowButtonBack);
-
-//-----Таблица результатов
-
-let arrayGamers = [
-    { name: "Anna", score: 12345 },
-    { name: "Alex", score: 1234 },
-    { name: "Alice", score: 123 },
-    { name: "Петр", score: 315165 },
-    { name: "Алексей", score: 58615 },
-    { name: "Вадим", score: 6161 },
-    { name: "Женя", score: 213 },
-    { name: "Игорь", score: 66165 },
-    { name: "Вячеслав", score: 12634 },
-    { name: "Александр", score: 6515 },
-];
-let emptyArrayGamersMonth = [
-    { name: "-", score: "-" },
-    { name: "-", score: "-" },
-    { name: "-", score: "-" },
-    { name: "-", score: "-" },
-    { name: "-", score: "-" },
-    { name: "-", score: "-" },
-    { name: "-", score: "-" },
-    { name: "-", score: "-" },
-    { name: "-", score: "-" },
-    { name: "-", score: "-" },
-]
-let emptyArrayGamersWeek = JSON.parse(JSON.stringify(emptyArrayGamersMonth));
-emptyArrayGamersWeek[0].name = "Cat";                                        ///<-----для проверки
-
-let resultsAlltime = createResultsTable(arrayGamers);
-let resultsMonth = createResultsTable(emptyArrayGamersMonth);
-let resultsWeek = createResultsTable(emptyArrayGamersWeek);
-formLeaderBoard.addChild(resultsAlltime);
-formLeaderBoard.addChild(resultsMonth);
-formLeaderBoard.addChild(resultsWeek);
-
-resultsAlltime.visible = true;
-resultsMonth.visible = false;
-resultsWeek.visible = false;
-let results = [resultsAlltime, resultsMonth, resultsWeek];
-
-//Событие при нажатии на кнопку "ОК"
-function onButtonOkPressLeaderBoard() {
-    const buttonOkPress = PIXI.Texture.from('assets/image/UI/ok_button_press.png');
-    this.isdown = true;
-    this.texture = buttonOkPress;
+    containerFormLeaderBoard = new PIXI.Container()
+    app.stage.addChild(containerFormLeaderBoard);
     containerFormLeaderBoard.visible = false;
-    containerFormIntro.visible = true;
-    namePeriod = 0
-    periodFormLeaderBoard.text = massivePeriod[namePeriod]
-}
-//События кнопок "Вперед" и "Назад"
-function onArrowButtonForwardDown() {
-    this.isdown = true;
-    this.texture = arrowPress;
-    results[namePeriod].visible = false;
-    periodFormLeaderBoard.text = massivePeriod[++namePeriod];
-    if (namePeriod < 3) {
-        results[namePeriod].visible = true;
-    }
-    if (namePeriod == 3) {
-        results[namePeriod - 1].visible = false;
-        namePeriod = 0;
-        results[namePeriod].visible = true;
-        periodFormLeaderBoard.text = massivePeriod[namePeriod];
-    }
-}
+    containerFormLeaderBoard.x = app.screen.width / 2 - containerFormLeaderBoard.width / 2;
+    containerFormLeaderBoard.y = app.screen.height / 2 - containerFormLeaderBoard.height / 2;
 
-function onArrowButtonForwardUp() {
-    this.isdown = false;
-    if (this.isOver) {
+    const formLeaderBoard = PIXI.Sprite.from('assets/image/UI/info_plate_big.png');
+    formLeaderBoard.scale.set(0.67);
+    formLeaderBoard.anchor.set(0.5);
+    formLeaderBoard.width = 505;
+    formLeaderBoard.height = 618;
+    containerFormLeaderBoard.addChild(formLeaderBoard);
+
+    //Header
+    const headerFormLeaderBoard = PIXI.Sprite.from('assets/image/UI/header_info_plate.png');
+    headerFormLeaderBoard.anchor.set(0.5);
+    headerFormLeaderBoard.y = -407;
+    formLeaderBoard.addChild(headerFormLeaderBoard);
+
+    const textFormLeaderBoard = new PIXI.Text("Таблица рекордов:", new FontStyle("#003D71"));
+    textFormLeaderBoard.anchor.set(0.5);
+    textFormLeaderBoard.y = -10;
+    headerFormLeaderBoard.addChild(textFormLeaderBoard);
+
+    //Кнопка "Ок"
+    let buttonOkFormLeaderBoard = createButtonOk()
+    formLeaderBoard.addChild(buttonOkFormLeaderBoard);
+    buttonOkFormLeaderBoard.on('pointerdown', onButtonOkPressLeaderBoard)
+
+    //Период
+    let massivePeriod = ['Вce время', 'Месяц', 'Неделя'];
+    let periodFormLeaderBoard = new PIXI.Text(massivePeriod[namePeriod], new FontStyle('#FF6800', 65, undefined, true));
+    formLeaderBoard.addChild(periodFormLeaderBoard);
+    periodFormLeaderBoard.anchor.set(0.47, 4.1);
+
+    //Кнопки "Вперед" - "Назад"
+    const arrowActive = PIXI.Texture.from('assets/image/UI/arrow_btn_active.png');
+    const arrowHover = PIXI.Texture.from('assets/image/UI/arrow_btn_hover.png');
+    const arrowPress = PIXI.Texture.from('assets/image/UI/arrow_btn_press.png');
+    const arrowButtonForward = new PIXI.Sprite(arrowActive);
+    arrowButtonForward.interactive = true;
+    arrowButtonForward
+        .on('pointerdown', onArrowButtonForwardDown)
+        .on('pointerup', onArrowButtonForwardUp)
+        .on('pointerover', onArrowButtonForwardOver)
+        .on('pointerout', onArrowButtonForwardOut);
+
+    arrowButtonForward.scale.set(1);
+    arrowButtonForward.position.set(240, -345)
+
+    const arrowButtonBack = new PIXI.Sprite(arrowActive);
+    arrowButtonBack.interactive = true;
+    arrowButtonBack
+        .on('pointerdown', onArrowButtonBackDown)
+        .on('pointerup', onArrowButtonForwardUp)
+        .on('pointerover', onArrowButtonForwardOver)
+        .on('pointerout', onArrowButtonForwardOut);
+
+    arrowButtonBack.scale.set(1);
+    arrowButtonBack.rotation = 1.06;
+    arrowButtonBack.position.set(-240, -345)
+    formLeaderBoard.addChild(arrowButtonForward, arrowButtonBack);
+
+    //-----Таблица результатов
+
+    let arrayGamers = [
+        { name: "Anna", score: 12345 },
+        { name: "Alex", score: 1234 },
+        { name: "Alice", score: 123 },
+        { name: "Петр", score: 315165 },
+        { name: "Алексей", score: 58615 },
+        { name: "Вадим", score: 6161 },
+        { name: "Женя", score: 213 },
+        { name: "Игорь", score: 66165 },
+        { name: "Вячеслав", score: 12634 },
+        { name: "Александр", score: 6515 },
+    ];
+    let emptyArrayGamersMonth = [
+        { name: "-", score: "-" },
+        { name: "-", score: "-" },
+        { name: "-", score: "-" },
+        { name: "-", score: "-" },
+        { name: "-", score: "-" },
+        { name: "-", score: "-" },
+        { name: "-", score: "-" },
+        { name: "-", score: "-" },
+        { name: "-", score: "-" },
+        { name: "-", score: "-" },
+    ]
+    let emptyArrayGamersWeek = JSON.parse(JSON.stringify(emptyArrayGamersMonth));
+    emptyArrayGamersWeek[0].name = "Cat";                                        ///<-----для проверки
+
+    let resultsAlltime = createResultsTable(arrayGamers);
+    let resultsMonth = createResultsTable(emptyArrayGamersMonth);
+    let resultsWeek = createResultsTable(emptyArrayGamersWeek);
+    formLeaderBoard.addChild(resultsAlltime);
+    formLeaderBoard.addChild(resultsMonth);
+    formLeaderBoard.addChild(resultsWeek);
+
+    resultsAlltime.visible = true;
+    resultsMonth.visible = false;
+    resultsWeek.visible = false;
+    let results = [resultsAlltime, resultsMonth, resultsWeek];
+
+    //Событие при нажатии на кнопку "ОК"
+    function onButtonOkPressLeaderBoard() {
+        const buttonOkPress = PIXI.Texture.from('assets/image/UI/ok_button_press.png');
+        this.isdown = true;
+        this.texture = buttonOkPress;
+        containerFormLeaderBoard.visible = false;
+        containerFormIntro.visible = true;
+        namePeriod = 0
+        periodFormLeaderBoard.text = massivePeriod[namePeriod]
+    }
+    //События кнопок "Вперед" и "Назад"
+    function onArrowButtonForwardDown() {
+        this.isdown = true;
+        this.texture = arrowPress;
+        results[namePeriod].visible = false;
+        periodFormLeaderBoard.text = massivePeriod[++namePeriod];
+        if (namePeriod < 3) {
+            results[namePeriod].visible = true;
+        }
+        if (namePeriod == 3) {
+            results[namePeriod - 1].visible = false;
+            namePeriod = 0;
+            results[namePeriod].visible = true;
+            periodFormLeaderBoard.text = massivePeriod[namePeriod];
+        }
+    }
+
+    function onArrowButtonForwardUp() {
+        this.isdown = false;
+        if (this.isOver) {
+            this.texture = arrowHover;
+        }
+    }
+
+    function onArrowButtonForwardOver() {
+        this.isOver = true;
+        if (this.isdown) {
+            return;
+        }
         this.texture = arrowHover;
     }
-}
 
-function onArrowButtonForwardOver() {
-    this.isOver = true;
-    if (this.isdown) {
-        return;
-    }
-    this.texture = arrowHover;
-}
-
-function onArrowButtonForwardOut() {
-    this.isOver = false;
-    if (this.isdown) {
-        return;
-    }
-    this.texture = arrowActive;
-}
-
-function onArrowButtonBackDown() {
-    this.isdown = true;
-    this.texture = arrowPress;
-
-  
-    periodFormLeaderBoard.text = massivePeriod[--namePeriod];
-    if (namePeriod >= 0) {
-        results[namePeriod].visible = true;
-        results[namePeriod + 1].visible = false;
-    }
-    if (namePeriod < 0) {
-        namePeriod = massivePeriod.length - 1;
-        results[namePeriod].visible = true;
-        periodFormLeaderBoard.text = massivePeriod[namePeriod];
-
+    function onArrowButtonForwardOut() {
+        this.isOver = false;
+        if (this.isdown) {
+            return;
+        }
+        this.texture = arrowActive;
     }
 
-}
+    function onArrowButtonBackDown() {
+        this.isdown = true;
+        this.texture = arrowPress;
+
+        periodFormLeaderBoard.text = massivePeriod[--namePeriod];
+        if (namePeriod >= 0) {
+            results[namePeriod].visible = true;
+            results[namePeriod + 1].visible = false;
+        }
+        if (namePeriod < 0) {
+            namePeriod = massivePeriod.length - 1;
+            results[namePeriod].visible = true;
+            periodFormLeaderBoard.text = massivePeriod[namePeriod];
+
+        }
+    }
 }
 //----- Кнопка "OK"
 export function createButtonOk() {
@@ -739,7 +762,7 @@ export function createResultsTable(arrayGamers) {
                 scoreLeadSprite.width = 180;
                 scoreLeadSprite.position.set(170, -255 + i * 80)
                 let scoreLeadGamers = new PIXI.Text(arrayGamers[i].score, new FontStyle(colorLeadPLace[i], 40));
-                scoreLeadGamers.position.set(scoreLeadSprite.width/2 - scoreLeadGamers.width/2, -2);
+                scoreLeadGamers.position.set(scoreLeadSprite.width / 2 - scoreLeadGamers.width / 2, -2);
                 scoreLeadSprite.addChild(scoreLeadGamers);
                 resultsTable.addChild(leadPlaceSrite[i], scoreLeadSprite);
             }
@@ -757,10 +780,32 @@ export function createResultsTable(arrayGamers) {
                 scoreGamers.position.set(178, i * positionText.height - 170);
                 const textScoreGamers = new PIXI.Text(arrayGamers[i].score, fontStyleListGamers);
                 scoreGamers.addChild(textScoreGamers);
-                textScoreGamers.position.set(scoreGamers.width/2 - textScoreGamers.width/2, -6);
+                textScoreGamers.position.set(scoreGamers.width / 2 - textScoreGamers.width / 2, -6);
                 resultsTable.addChild(nameGamers, scoreGamers);
             }
         }, 100 * i);
     }
     return resultsTable;
+}
+
+function game() {
+    let childrenConteinerSetup = containerSetup.children;
+    app.ticker.add(() => {
+        childrenConteinerSetup[0].tilePosition.x -= 0.1;
+        childrenConteinerSetup[1].tilePosition.x -= 2;
+        childrenConteinerSetup[2].position.x -= 5;
+        childrenConteinerSetup[3].x += 1;
+        childrenConteinerSetup[4].position.x -= 2;
+        childrenConteinerSetup[5].position.x -= 6;
+        childrenConteinerSetup[6].position.x -= 4;
+        moveSprite();
+
+        function moveSprite() {
+            for (let sprite of childrenConteinerSetup) {
+                if (sprite.position.x == Math.round(-sprite.width)) {
+                    sprite.position.x = app.screen.width;
+                }
+            }
+        }
+    })
 }

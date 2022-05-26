@@ -2,16 +2,7 @@
 //? НЕ ЗАБЫТЬ!!!
 //TODO Сделать расширение экрана, подключить шрифт из CSS , разобраться с выводм лидерборда(пушить в массив а потом выводить или каждый раз вызывать create)
 
-import { FontStyle } from './font_style.js'
-import {
-    background,
-    createControlPanel,
-    createFormIntro,
-    createFormGameOver,
-    createFormLeaderBoard,
-   
-} from './functions.js'
-
+import {setup} from './functions.js'
 let gamePlace = document.getElementById("gamePlace");
 let game = gamePlace.querySelector("div");
 /*game.style.overflow = "hidden";*/
@@ -26,11 +17,6 @@ app.stage.interactive = true;
 app.stage.cursor = "pointer";
 game.appendChild(app.view);
 
-background();
-createControlPanel();
-createFormIntro();
-createFormGameOver();
-createFormLeaderBoard();
+setup();
 
-
-console.log("Данные 0 : " + namePeriod) //<--------------------------------------считалка
+//console.log("Данные 0 : " + Math.round(-treeThreeSprite.width)) //<--------------------------------------считалка
