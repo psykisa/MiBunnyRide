@@ -26,4 +26,3 @@ app.renderer.view.style.display = "block";
 setup();
 
 console.log("Данные 0 : " + app.screen.width) //<--------------------------------------считалка
-//

@@ -453,31 +453,6 @@ export function setup() {
         arrayStars[i].anchor.set(0.5, 0.5);
     }
 
-    // arrayStars[0].position.set(-200, 190);
-    // arrayStars[0].rotation = 1.1;
-    // arrayStars[0].scale.set(0.6);
-    // arrayStars[1].position.set(215, 200);
-    // arrayStars[1].rotation = -1.1;
-    // arrayStars[1].scale.set(0.5);
-    // arrayStars[2].position.set(-220, 10);
-    // arrayStars[2].rotation = 1.2;
-    // arrayStars[2].scale.set(0.8);
-    // arrayStars[3].rotation = - 1.2;
-    // arrayStars[3].position.set(250, 60);
-    // arrayStars[3].scale.set(0.45);
-    // arrayStars[4].position.set(-270, -90);
-    // arrayStars[4].rotation = 1.3;
-    // arrayStars[4].scale.set(0.4)
-    // arrayStars[5].position.set(520, -130);
-    // arrayStars[5].rotation = 1.1;
-    // arrayStars[5].scale.set(0.8);
-    // arrayStars[6].position.set(-170, -220);
-    // arrayStars[6].rotation = 1.4;
-    // arrayStars[6].scale.set(0.7);
-    // arrayStars[7].position.set(430, -255);
-    // arrayStars[7].rotation = 1.1;
-    // arrayStars[7].scale.set(0.55);
-
     arrayStars[0].position.set(-340, 240);
     //arrayStars[0].rotation = 1.1;
     arrayStars[0].scale.set(0.65);
@@ -505,9 +480,12 @@ export function setup() {
  
     let radian = 0; 
     app.ticker.add(()=>{
-        grad += 0.003;
+        if(radian != 0.2){
+            radian += 0.003 ;
+        }  
+        console.log("Данные 0 : " + radian) //<--------------------------------------считалка
          for (let i = 0; i < arrayStars.length; i++) {
-           ((i+1) % 2) ? arrayStars[i].rotation = grad : arrayStars[i].rotation = - grad;
+           ((i+1) % 2) ? arrayStars[i].rotation = - radian : arrayStars[i].rotation = radian;
          }
     });
   
