@@ -24,7 +24,6 @@ export function setup() {
     const ice = PIXI.Texture.from("assets/image/Environment/floor.png");
     const iceFloor = new PIXI.TilingSprite(ice, app.screen.width, app.screen.height - app.screen.height * 0.9);
     iceFloor.y = app.screen.height - iceFloor.height;
-
     const sunTexture = PIXI.Texture.from("assets/image/Environment/bg_sun.png");
     const sunSprite = new PIXI.Sprite(sunTexture);
     sunSprite.width = 415;
@@ -67,13 +66,13 @@ export function setup() {
         bunnySprite);
     app.stage.addChild(containerSetup);
     createControlPanel();
-    createFormIntro()
+     //createFormIntro()
     createFormGameOver();
-    createFormLeaderBoard();
-    //game();
+    //createFormLeaderBoard();
+    // game();
 }
 //----- Панель управления -----//
-export function createControlPanel() {
+ function createControlPanel() {
     containerHeader = new PIXI.Container();
     app.stage.addChild(containerHeader);
 
@@ -176,6 +175,13 @@ export function createControlPanel() {
     function onGrowButtonDown() {
         this.isdown = true;
         this.texture = pressGrowButton;
+        if(app.renderer.view.style.width == 100 +"%"){
+            app.renderer.view.style.width = 1280 +"px";
+        }
+        else{
+            app.renderer.view.style.width = 100 +"%";
+        }
+
     }
 
     function onGrowButtonUp() {
@@ -241,7 +247,7 @@ export function createControlPanel() {
     }
 }
 //-----Форма "Начало игры" -----//
-export function createFormIntro() {
+ function createFormIntro() {
     containerFormIntro = new PIXI.Container();
     containerFormIntro.x = app.screen.width / 2;
     containerFormIntro.y = app.screen.height / 2;
@@ -423,12 +429,12 @@ export function createFormIntro() {
     }
 }
 //-----Форма "Окончание игры"
-export function createFormGameOver() {
+ function createFormGameOver() {
     containerFormGameOver = new PIXI.Container();
     app.stage.addChild(containerFormGameOver);
     containerFormGameOver.x = app.screen.width / 2;
     containerFormGameOver.y = app.screen.height / 2;
-    containerFormGameOver.visible = false;
+    containerFormGameOver.visible = true;
 
     //лучи
     const rays = PIXI.Sprite.from('assets/image/UI/rays.png');
@@ -440,38 +446,71 @@ export function createFormGameOver() {
     });
 
     //звезды
-    const spriteStars = [];
+    const arrayStars = [];
     for (let i = 0; i < 8; i++) {
-        spriteStars[i] = PIXI.Sprite.from('assets/image/UI/star.png');
-        containerFormGameOver.addChild(spriteStars[i]);
-        spriteStars[i].anchor.set(0.5, -1);
+        arrayStars[i] = PIXI.Sprite.from('assets/image/UI/star.png');
+        containerFormGameOver.addChild(arrayStars[i]);
+        arrayStars[i].anchor.set(0.5, 0.5);
     }
 
-    spriteStars[0].position.set(-200, 190);
-    spriteStars[0].rotation = 1.1;
-    spriteStars[0].scale.set(0.6);
-    spriteStars[1].position.set(215, 200);
-    spriteStars[1].rotation = -1.1;
-    spriteStars[1].scale.set(0.5);
-    spriteStars[2].position.set(-220, 10);
-    spriteStars[2].rotation = 1.2;
-    spriteStars[2].scale.set(0.8);
-    spriteStars[3].rotation = - 1.2;
-    spriteStars[3].position.set(250, 60);
-    spriteStars[3].scale.set(0.45);
-    spriteStars[4].position.set(-270, -90);
-    spriteStars[4].rotation = 1.3;
-    spriteStars[4].scale.set(0.4)
-    spriteStars[5].position.set(520, -130);
-    spriteStars[5].rotation = 1.1;
-    spriteStars[5].scale.set(0.8);
-    spriteStars[6].position.set(-170, -220);
-    spriteStars[6].rotation = 1.4;
-    spriteStars[6].scale.set(0.7);
-    spriteStars[7].position.set(430, -255);
-    spriteStars[7].rotation = 1.1;
-    spriteStars[7].scale.set(0.55);
+    // arrayStars[0].position.set(-200, 190);
+    // arrayStars[0].rotation = 1.1;
+    // arrayStars[0].scale.set(0.6);
+    // arrayStars[1].position.set(215, 200);
+    // arrayStars[1].rotation = -1.1;
+    // arrayStars[1].scale.set(0.5);
+    // arrayStars[2].position.set(-220, 10);
+    // arrayStars[2].rotation = 1.2;
+    // arrayStars[2].scale.set(0.8);
+    // arrayStars[3].rotation = - 1.2;
+    // arrayStars[3].position.set(250, 60);
+    // arrayStars[3].scale.set(0.45);
+    // arrayStars[4].position.set(-270, -90);
+    // arrayStars[4].rotation = 1.3;
+    // arrayStars[4].scale.set(0.4)
+    // arrayStars[5].position.set(520, -130);
+    // arrayStars[5].rotation = 1.1;
+    // arrayStars[5].scale.set(0.8);
+    // arrayStars[6].position.set(-170, -220);
+    // arrayStars[6].rotation = 1.4;
+    // arrayStars[6].scale.set(0.7);
+    // arrayStars[7].position.set(430, -255);
+    // arrayStars[7].rotation = 1.1;
+    // arrayStars[7].scale.set(0.55);
 
+    arrayStars[0].position.set(-340, 240);
+    //arrayStars[0].rotation = 1.1;
+    arrayStars[0].scale.set(0.65);
+    arrayStars[1].position.set(330, 235);
+    //arrayStars[1].rotation = -1.1;
+    arrayStars[1].scale.set(0.6);
+    arrayStars[2].position.set(-410, 80);
+    //arrayStars[2].rotation = 1.2;
+    arrayStars[2].scale.set(0.9);
+    //arrayStars[3].rotation = - 1.2;
+    arrayStars[3].position.set(360, 90);
+    arrayStars[3].scale.set(0.55);
+    arrayStars[4].position.set(-370, -80);
+   // arrayStars[4].rotation = 1.3;
+    arrayStars[4].scale.set(0.5)
+    arrayStars[5].position.set(370, -80);
+   // arrayStars[5].rotation = 1.1;
+    arrayStars[5].scale.set(1);
+    arrayStars[6].position.set(-345, -220);
+   // arrayStars[6].rotation = 1.4;
+    arrayStars[6].scale.set(0.65);
+    arrayStars[7].position.set(320, -230);
+   // arrayStars[7].rotation = 1.1;
+    arrayStars[7].scale.set(0.6);
+ 
+    let radian = 0; 
+    app.ticker.add(()=>{
+        grad += 0.003;
+         for (let i = 0; i < arrayStars.length; i++) {
+           ((i+1) % 2) ? arrayStars[i].rotation = grad : arrayStars[i].rotation = - grad;
+         }
+    });
+  
     //фома
     const formGameOver = PIXI.Sprite.from('assets/image/UI/info_plate_big.png');
     formGameOver.scale.set(0.67);
@@ -536,7 +575,7 @@ export function createFormGameOver() {
 
 }
 //-----Форма "Результаты"
-export function createFormLeaderBoard() {
+ function createFormLeaderBoard() {
 
     let namePeriod = 0;
 
@@ -712,7 +751,7 @@ export function createFormLeaderBoard() {
     }
 }
 //----- Кнопка "OK"
-export function createButtonOk() {
+ function createButtonOk() {
     const buttonOkActive = PIXI.Texture.from('assets/image/UI/ok_button_active.png');
     const buttonOkHover = PIXI.Texture.from('assets/image/UI/ok_button_hover.png');
     const buttonOk = new PIXI.Sprite(buttonOkActive);
@@ -741,7 +780,7 @@ export function createButtonOk() {
     }
 }
 //-----Таблица Результатов
-export function createResultsTable(arrayGamers) {
+ function createResultsTable(arrayGamers) {
     const resultsTable = new PIXI.Container();
     let leadPlaceSrite = [PIXI.Sprite.from("assets/image/UI/place_1.png"),
     PIXI.Sprite.from("assets/image/UI/place_2.png"),
@@ -790,7 +829,7 @@ export function createResultsTable(arrayGamers) {
 
 function game() {
     let childrenConteinerSetup = containerSetup.children;
-    app.ticker.add(() => {
+     app.ticker.add(() => {
         childrenConteinerSetup[0].tilePosition.x -= 0.1;
         childrenConteinerSetup[1].tilePosition.x -= 2;
         childrenConteinerSetup[2].position.x -= 5;
