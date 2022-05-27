@@ -20,3 +20,4 @@ game.appendChild(app.view);
 setup();
 
 //console.log("Данные 0 : " + Math.round(-treeThreeSprite.width)) //<--------------------------------------считалка
+//
