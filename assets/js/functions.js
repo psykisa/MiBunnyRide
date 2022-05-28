@@ -806,7 +806,7 @@ function game() {
     ticker.start();
     app.stage.addChild(textGameProcess);
 
-    let fontSize = 0;
+    let fontSize = 0; // для работы с высотой и длинной текста игровой сессии
     ticker.add(() => {
         fontSize += 0.015;
         textGameProcess.scale.x = Math.sin(fontSize);

@@ -4,8 +4,6 @@
 
 import {setup} from './functions.js'
  let gamePlace = document.getElementById("gamePlace");
-// let game = gamePlace.querySelector("div");
-// game.style.overflow = "hidden";
 export const app = new PIXI.Application({
     width: 1280,
     height: 640,
@@ -16,7 +14,6 @@ app.stage.sortableChildren = true;
 app.renderer.autoResize = true;
 app.stage.interactive = true;
 app.stage.cursor = "pointer";
-// game.appendChild(app.view);
 gamePlace.appendChild(app.view);
 
 // app.renderer.view.style.position = "absolute";
