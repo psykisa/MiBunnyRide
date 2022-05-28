@@ -230,7 +230,7 @@ function createControlPanel() {
     function onPauseButtonDown() {
         this.isdown = true;
         this.texture = pressPauseButton;
-        pauseMask.visible = (!pauseMask.visible) ? (true ): false;
+        pauseMask.visible = (!pauseMask.visible) ? (true) : false;
         (pauseMask.visible) ? ticker.stop() : ticker.start();
     }
     function onPauseButtonUp() {
@@ -799,17 +799,17 @@ function createResultsTable(arrayGamers) {
 //-----Игра
 function game() {
     let childrenConteinerSetup = containerSetup.children;
-    textGameProcess.position.set(app.screen.width/2 , app.screen.height/2 - textGameProcess.height/2);
+    textGameProcess.position.set(app.screen.width / 2, app.screen.height / 2 - textGameProcess.height / 2);
     textGameProcess.visible = true;
     textGameProcess.anchor.set(0.5);
     ticker = PIXI.Ticker.shared;
     ticker.start();
     app.stage.addChild(textGameProcess);
-     
+
     let fontSize = 0;
     ticker.add(() => {
         fontSize += 0.015;
-        textGameProcess.scale.x =  Math.sin(fontSize);
+        textGameProcess.scale.x = Math.sin(fontSize);
         textGameProcess.scale.y = 2 - Math.cos(fontSize);
 
         childrenConteinerSetup[0].tilePosition.x -= 0.1;
@@ -828,10 +828,10 @@ function game() {
             }
         }
     })
-    
-    setTimeout(() =>{
+
+    setTimeout(() => {
         containerFormGameOver.visible = true;
         textGameProcess.visible = false;
         ticker.stop();
-    },10000);
+    }, 10000);
 }
