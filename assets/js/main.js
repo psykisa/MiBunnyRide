@@ -19,8 +19,8 @@ app.stage.cursor = "pointer";
 // game.appendChild(app.view);
 gamePlace.appendChild(app.view);
 
-app.renderer.view.style.position = "absolute";
-app.renderer.view.style.display = "block";
+// app.renderer.view.style.position = "absolute";
+// app.renderer.view.style.display = "block";
 // app.renderer.resize(window.innerWidth, window.innerHeight);
 
 setup();

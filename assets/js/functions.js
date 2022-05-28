@@ -6,11 +6,15 @@ let containerHeader;
 let containerFormIntro;
 let containerFormGameOver;
 let containerFormLeaderBoard;
-
+let ticker;
 export let playerName = "Alex";
 export let score = 55;
 export let coin = "0"
 export let distance = "0";
+
+//Текст в игровоёй сессии 
+const textGameProcess = new PIXI.Text("Game session in progress!", new FontStyle("#CC1222", 80, undefined, true))
+textGameProcess.visible = false;
 
 //----- Setup -----//
 export function setup() {
@@ -28,7 +32,6 @@ export function setup() {
     const sunSprite = new PIXI.Sprite(sunTexture);
     sunSprite.width = 415;
     sunSprite.height = 415;
-
 
     const airshipSprite = PIXI.Sprite.from("assets/image/Environment/airship.png");
     airshipSprite.height = 90;
@@ -66,13 +69,12 @@ export function setup() {
         bunnySprite);
     app.stage.addChild(containerSetup);
     createControlPanel();
-     //createFormIntro()
+    createFormIntro()
     createFormGameOver();
-    //createFormLeaderBoard();
-    // game();
+    createFormLeaderBoard();
 }
 //----- Панель управления -----//
- function createControlPanel() {
+function createControlPanel() {
     containerHeader = new PIXI.Container();
     app.stage.addChild(containerHeader);
 
@@ -175,11 +177,11 @@ export function setup() {
     function onGrowButtonDown() {
         this.isdown = true;
         this.texture = pressGrowButton;
-        if(app.renderer.view.style.width == 100 +"%"){
-            app.renderer.view.style.width = 1280 +"px";
+        if (app.renderer.view.style.width == 100 + "%") {
+            app.renderer.view.style.width = 1280 + "px";
         }
-        else{
-            app.renderer.view.style.width = 100 +"%";
+        else {
+            app.renderer.view.style.width = 100 + "%";
         }
 
     }
@@ -228,7 +230,8 @@ export function setup() {
     function onPauseButtonDown() {
         this.isdown = true;
         this.texture = pressPauseButton;
-        pauseMask.visible = (!pauseMask.visible) ? true : false;
+        pauseMask.visible = (!pauseMask.visible) ? (true ): false;
+        (pauseMask.visible) ? ticker.stop() : ticker.start();
     }
     function onPauseButtonUp() {
         this.isdown = false;
@@ -247,7 +250,7 @@ export function setup() {
     }
 }
 //-----Форма "Начало игры" -----//
- function createFormIntro() {
+function createFormIntro() {
     containerFormIntro = new PIXI.Container();
     containerFormIntro.x = app.screen.width / 2;
     containerFormIntro.y = app.screen.height / 2;
@@ -339,7 +342,6 @@ export function setup() {
         this.isdown = true;
         this.texture = buttonMiPress;
         document.location.href = 'https://account.xiaomi.com/fe/service/login/password?client_id=2882303761518691426&_ssign=2%26V1_oauth2.0%26mf6HIlHY8a9BU%2BW5INWlitVS1Ho%3D&lsrp_appName=Sign+in+to+%24%7Bmi+bunny+ride%7D%24+with+Mi+Account&_customDisplay=20&scope=1&_locale=en_US&sid=oauth2.0&qs=%253Fcallback%253Dhttps%25253A%25252F%25252Fopen.account.xiaomi.com%25252Fsts%25252Foauth%25253Fsign%25253DczmkxNtqFsVr9MvD95ynqto2jME%2525253D%252526followup%25253Dhttps%2525253A%2525252F%2525252Fopen.account.xiaomi.com%2525252Foauth2%2525252Fauthorize%2525253Fresponse_type%2525253Dtoken%25252526client_id%2525253D2882303761518691426%25252526redirect_uri%2525253Dhttps%252525253A%252525252F%252525252Fmibunnyride.com%252525252F%25252526skip_confirm%2525253Dfalse%252526sid%25253Doauth2.0%2526sid%253Doauth2.0%2526lsrp_appName%253DSign%252520in%252520to%252520%252524%25257Bmi%252520bunny%252520ride%25257D%252524%252520with%252520Mi%252520Account%2526_customDisplay%253D20%2526scope%253D1%2526client_id%253D2882303761518691426%2526_locale%253Den_US%2526_ssign%253D2%252526V1_oauth2.0%252526mf6HIlHY8a9BU%25252BW5INWlitVS1Ho%25253D&callback=https%3A%2F%2Fopen.account.xiaomi.com%2Fsts%2Foauth%3Fsign%3DczmkxNtqFsVr9MvD95ynqto2jME%253D%26followup%3Dhttps%253A%252F%252Fopen.account.xiaomi.com%252Foauth2%252Fauthorize%253Fresponse_type%253Dtoken%2526client_id%253D2882303761518691426%2526redirect_uri%253Dhttps%25253A%25252F%25252Fmibunnyride.com%25252F%2526skip_confirm%253Dfalse%26sid%3Doauth2.0&_sign=2%26V1_oauth2.0%26gmKkXwnELJp7pPtOyTYLaApYCc8%3D&serviceParam=%7B%22checkSafePhone%22%3Afalse%2C%22checkSafeAddress%22%3Afalse%2C%22lsrp_score%22%3A0.0%7D&showActiveX=false&theme=&needTheme=false&bizDeviceType=&scopes=%5B%7B%5C%22level%5C%22%3A1%2C%5C%22name%5C%22%3A%5C%22Mi+Account+info%5C%22%2C%5C%22id%5C%22%3A1%7D%5D';
-
     }
 
     function onMiButtonUp() {
@@ -370,7 +372,7 @@ export function setup() {
         this.isdown = true;
         this.texture = buttonPlayPress;
         containerFormIntro.visible = false;
-        containerFormGameOver.visible = true;
+        game();
     }
 
     function onPlayButtonUp() {
@@ -429,12 +431,12 @@ export function setup() {
     }
 }
 //-----Форма "Окончание игры"
- function createFormGameOver() {
+function createFormGameOver() {
     containerFormGameOver = new PIXI.Container();
     app.stage.addChild(containerFormGameOver);
     containerFormGameOver.x = app.screen.width / 2;
     containerFormGameOver.y = app.screen.height / 2;
-    containerFormGameOver.visible = true;
+    containerFormGameOver.visible = false;
 
     //лучи
     const rays = PIXI.Sprite.from('assets/image/UI/rays.png');
@@ -454,41 +456,31 @@ export function setup() {
     }
 
     arrayStars[0].position.set(-340, 240);
-    //arrayStars[0].rotation = 1.1;
     arrayStars[0].scale.set(0.65);
     arrayStars[1].position.set(330, 235);
-    //arrayStars[1].rotation = -1.1;
     arrayStars[1].scale.set(0.6);
     arrayStars[2].position.set(-410, 80);
-    //arrayStars[2].rotation = 1.2;
     arrayStars[2].scale.set(0.9);
-    //arrayStars[3].rotation = - 1.2;
     arrayStars[3].position.set(360, 90);
     arrayStars[3].scale.set(0.55);
     arrayStars[4].position.set(-370, -80);
-   // arrayStars[4].rotation = 1.3;
     arrayStars[4].scale.set(0.5)
     arrayStars[5].position.set(370, -80);
-   // arrayStars[5].rotation = 1.1;
     arrayStars[5].scale.set(1);
     arrayStars[6].position.set(-345, -220);
-   // arrayStars[6].rotation = 1.4;
     arrayStars[6].scale.set(0.65);
     arrayStars[7].position.set(320, -230);
-   // arrayStars[7].rotation = 1.1;
     arrayStars[7].scale.set(0.6);
- 
-    let radian = 0; 
-    app.ticker.add(()=>{
-        if(radian != 0.2){
-            radian += 0.003 ;
-        }  
-        console.log("Данные 0 : " + radian) //<--------------------------------------считалка
-         for (let i = 0; i < arrayStars.length; i++) {
-           ((i+1) % 2) ? arrayStars[i].rotation = - radian : arrayStars[i].rotation = radian;
-         }
+
+    let radian = 0;
+    app.ticker.add(() => {
+        radian += 0.02;
+        const value = Math.cos(radian);
+        for (let i = 0; i < arrayStars.length; i++) {
+            ((i + 1) % 2) ? arrayStars[i].rotation = - value * 0.3 : arrayStars[i].rotation = value * 0.3;
+        }
     });
-  
+
     //фома
     const formGameOver = PIXI.Sprite.from('assets/image/UI/info_plate_big.png');
     formGameOver.scale.set(0.67);
@@ -553,7 +545,7 @@ export function setup() {
 
 }
 //-----Форма "Результаты"
- function createFormLeaderBoard() {
+function createFormLeaderBoard() {
 
     let namePeriod = 0;
 
@@ -729,7 +721,7 @@ export function setup() {
     }
 }
 //----- Кнопка "OK"
- function createButtonOk() {
+function createButtonOk() {
     const buttonOkActive = PIXI.Texture.from('assets/image/UI/ok_button_active.png');
     const buttonOkHover = PIXI.Texture.from('assets/image/UI/ok_button_hover.png');
     const buttonOk = new PIXI.Sprite(buttonOkActive);
@@ -758,7 +750,7 @@ export function setup() {
     }
 }
 //-----Таблица Результатов
- function createResultsTable(arrayGamers) {
+function createResultsTable(arrayGamers) {
     const resultsTable = new PIXI.Container();
     let leadPlaceSrite = [PIXI.Sprite.from("assets/image/UI/place_1.png"),
     PIXI.Sprite.from("assets/image/UI/place_2.png"),
@@ -804,19 +796,30 @@ export function setup() {
     }
     return resultsTable;
 }
-
+//-----Игра
 function game() {
     let childrenConteinerSetup = containerSetup.children;
-     app.ticker.add(() => {
+    textGameProcess.position.set(app.screen.width/2 , app.screen.height/2 - textGameProcess.height/2);
+    textGameProcess.visible = true;
+    textGameProcess.anchor.set(0.5);
+    ticker = PIXI.Ticker.shared;
+    ticker.start();
+    app.stage.addChild(textGameProcess);
+     
+    let fontSize = 0;
+    ticker.add(() => {
+        fontSize += 0.015;
+        textGameProcess.scale.x =  Math.sin(fontSize);
+        textGameProcess.scale.y = 2 - Math.cos(fontSize);
+
         childrenConteinerSetup[0].tilePosition.x -= 0.1;
         childrenConteinerSetup[1].tilePosition.x -= 2;
         childrenConteinerSetup[2].position.x -= 5;
-        childrenConteinerSetup[3].x += 1;
+        childrenConteinerSetup[3].position.x += 1;
         childrenConteinerSetup[4].position.x -= 2;
         childrenConteinerSetup[5].position.x -= 6;
         childrenConteinerSetup[6].position.x -= 4;
         moveSprite();
-
         function moveSprite() {
             for (let sprite of childrenConteinerSetup) {
                 if (sprite.position.x == Math.round(-sprite.width)) {
@@ -825,4 +828,10 @@ function game() {
             }
         }
     })
+    
+    setTimeout(() =>{
+        containerFormGameOver.visible = true;
+        textGameProcess.visible = false;
+        ticker.stop();
+    },10000);
 }
