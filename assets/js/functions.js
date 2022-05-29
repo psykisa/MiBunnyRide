@@ -16,7 +16,7 @@ export let distance = "0";
 const textGameProcess = new PIXI.Text("Game session in progress!", new FontStyle("#CC1222", 80, undefined, true))
 textGameProcess.visible = false;
 
-//----- Setup -----//
+//----- Setup -----------------------------------------------------------//
 export function setup() {
     containerSetup = new PIXI.Container()
 
@@ -73,7 +73,7 @@ export function setup() {
     createFormGameOver();
     createFormLeaderBoard();
 }
-//----- Панель управления -----//
+//----- Панель управления -----------------------------------------------//
 function createControlPanel() {
     containerHeader = new PIXI.Container();
     app.stage.addChild(containerHeader);
@@ -181,7 +181,7 @@ function createControlPanel() {
             app.renderer.view.style.width = 1280 + "px";
         }
         else {
-            app.renderer.view.style.width = 100 + "%";
+            app.renderer.view.style.width = 100 + "%"
         }
 
     }
@@ -249,7 +249,7 @@ function createControlPanel() {
         this.texture = activePauseButton;
     }
 }
-//-----Форма "Начало игры" -----//
+//----- Форма "Начало игры" ---------------------------------------------//
 function createFormIntro() {
     containerFormIntro = new PIXI.Container();
     containerFormIntro.x = app.screen.width / 2;
@@ -430,7 +430,7 @@ function createFormIntro() {
         this.texture = buttonLeadBoardActive;
     }
 }
-//-----Форма "Окончание игры"
+//----- Форма "Окончание игры"- -----------------------------------------//
 function createFormGameOver() {
     containerFormGameOver = new PIXI.Container();
     app.stage.addChild(containerFormGameOver);
@@ -544,7 +544,7 @@ function createFormGameOver() {
     setDistance(123);
 
 }
-//-----Форма "Результаты"
+//----- Форма "Результаты" ----------------------------------------------//
 function createFormLeaderBoard() {
 
     let namePeriod = 0;
@@ -640,18 +640,39 @@ function createFormLeaderBoard() {
     ]
     let emptyArrayGamersWeek = JSON.parse(JSON.stringify(emptyArrayGamersMonth));
     emptyArrayGamersWeek[0].name = "Cat";                                        ///<-----для проверки
-
+    let results = [];
     let resultsAlltime = createResultsTable(arrayGamers);
     let resultsMonth = createResultsTable(emptyArrayGamersMonth);
     let resultsWeek = createResultsTable(emptyArrayGamersWeek);
     formLeaderBoard.addChild(resultsAlltime);
     formLeaderBoard.addChild(resultsMonth);
     formLeaderBoard.addChild(resultsWeek);
-
+    results.push(resultsAlltime, resultsMonth, resultsWeek);
     resultsAlltime.visible = true;
     resultsMonth.visible = false;
     resultsWeek.visible = false;
-    let results = [resultsAlltime, resultsMonth, resultsWeek];
+    
+    // let textLoad = new PIXI.Text("Загрузка...", new FontStyle("#00295D", 80));
+    // formLeaderBoard.addChild(textLoad);
+    // textLoad.position.set(-textLoad.width / 2, -textLoad.height / 2);
+    // textLoad.visible = false;
+    const showLinesTable = (namePeriod) => {
+        let temp = results[namePeriod].children;
+            for (let i = 0; i < temp.length; i++) {
+                setTimeout(() => {
+                    temp[i].visible = true;
+                }, 100 * i);
+            }
+    }
+
+    const hideLinesTable = (namePeriod) =>{
+        let temp = results[namePeriod].children;
+        for (let i = 0; i < temp.length; i++) {
+            temp[i].visible = false;
+        }
+    }
+
+    showLinesTable(namePeriod); //<----- вывод строк таблицы
 
     //Событие при нажатии на кнопку "ОК"
     function onButtonOkPressLeaderBoard() {
@@ -660,7 +681,7 @@ function createFormLeaderBoard() {
         this.texture = buttonOkPress;
         containerFormLeaderBoard.visible = false;
         containerFormIntro.visible = true;
-        namePeriod = 0
+        namePeriod = 0;
         periodFormLeaderBoard.text = massivePeriod[namePeriod]
     }
     //События кнопок "Вперед" и "Назад"
@@ -668,14 +689,17 @@ function createFormLeaderBoard() {
         this.isdown = true;
         this.texture = arrowPress;
         results[namePeriod].visible = false;
+        hideLinesTable(namePeriod);
         periodFormLeaderBoard.text = massivePeriod[++namePeriod];
         if (namePeriod < 3) {
             results[namePeriod].visible = true;
+            showLinesTable(namePeriod);
         }
         if (namePeriod == 3) {
             results[namePeriod - 1].visible = false;
             namePeriod = 0;
             results[namePeriod].visible = true;
+            showLinesTable(namePeriod);
             periodFormLeaderBoard.text = massivePeriod[namePeriod];
         }
     }
@@ -706,21 +730,24 @@ function createFormLeaderBoard() {
     function onArrowButtonBackDown() {
         this.isdown = true;
         this.texture = arrowPress;
-
+        hideLinesTable(namePeriod);
         periodFormLeaderBoard.text = massivePeriod[--namePeriod];
         if (namePeriod >= 0) {
             results[namePeriod].visible = true;
+            showLinesTable(namePeriod);
             results[namePeriod + 1].visible = false;
+            hideLinesTable(namePeriod + 1);
         }
         if (namePeriod < 0) {
             namePeriod = massivePeriod.length - 1;
             results[namePeriod].visible = true;
+            showLinesTable(namePeriod);
             periodFormLeaderBoard.text = massivePeriod[namePeriod];
 
         }
     }
 }
-//----- Кнопка "OK"
+//----- Кнопка "OK" -----------------------------------------------------//
 function createButtonOk() {
     const buttonOkActive = PIXI.Texture.from('assets/image/UI/ok_button_active.png');
     const buttonOkHover = PIXI.Texture.from('assets/image/UI/ok_button_hover.png');
@@ -749,54 +776,59 @@ function createButtonOk() {
         this.texture = buttonOkActive;
     }
 }
-//-----Таблица Результатов
+//----- Таблица Результатов ---------------------------------------------//
 function createResultsTable(arrayGamers) {
-    const resultsTable = new PIXI.Container();
+    const resultsTable = new PIXI.Container(); // <-------таблица
+    let rowResultTable ; //<--------строка в таблице результатов
     let leadPlaceSrite = [PIXI.Sprite.from("assets/image/UI/place_1.png"),
     PIXI.Sprite.from("assets/image/UI/place_2.png"),
     PIXI.Sprite.from("assets/image/UI/place_3.png")];
     let colorLeadPLace = ["#C16001", "#215DB0", "#8B1B01"];
-    let fontStyleListGamers = new FontStyle("#000", 37);
+    let fontStyleListGamers = new FontStyle("#333", 37);
     let fontStylePosition = new FontStyle('#FFF', 40);
 
     for (let i = 0; i < arrayGamers.length; i++) {
-        setTimeout(() => {
-            if (i < 3) {
-                leadPlaceSrite[i].scale.set(1);
-                leadPlaceSrite[i].position.set(-340, -270 + i * 80)
-                let nameLeadGamer = new PIXI.Text(arrayGamers[i].name, new FontStyle(colorLeadPLace[i], 45));
-                nameLeadGamer.position.set(80, 11)
-                leadPlaceSrite[i].addChild(nameLeadGamer);
-                let scoreLeadSprite = PIXI.Sprite.from("assets/image/UI/highleader_scores_plate.png");
-                scoreLeadSprite.width = 180;
-                scoreLeadSprite.position.set(170, -255 + i * 80)
-                let scoreLeadGamers = new PIXI.Text(arrayGamers[i].score, new FontStyle(colorLeadPLace[i], 40));
-                scoreLeadGamers.position.set(scoreLeadSprite.width / 2 - scoreLeadGamers.width / 2, -2);
-                scoreLeadSprite.addChild(scoreLeadGamers);
-                resultsTable.addChild(leadPlaceSrite[i], scoreLeadSprite);
-            }
-            if (i > 2) {
-                const positionText = new PIXI.Text(i + 1, fontStylePosition);
-                positionText.position.set(-300 - positionText.width / 2, i * positionText.height - 170);
-                resultsTable.addChild(positionText);
-                let nameGamers = PIXI.Sprite.from('assets/image/UI/midleader_name_plate.png');
-                nameGamers.position.set(-265, i * positionText.height - 170);
-                const textNameGamers = new PIXI.Text(arrayGamers[i].name, fontStyleListGamers);
-                textNameGamers.position.set(20, -6);
-                nameGamers.addChild(textNameGamers);
-                let scoreGamers = PIXI.Sprite.from('assets/image/UI/midleader_scores_plate.png');
-                scoreGamers.width = 165;
-                scoreGamers.position.set(178, i * positionText.height - 170);
-                const textScoreGamers = new PIXI.Text(arrayGamers[i].score, fontStyleListGamers);
-                scoreGamers.addChild(textScoreGamers);
-                textScoreGamers.position.set(scoreGamers.width / 2 - textScoreGamers.width / 2, -6);
-                resultsTable.addChild(nameGamers, scoreGamers);
-            }
-        }, 100 * i);
+        if (i < 3) {
+            leadPlaceSrite[i].scale.set(1);
+            leadPlaceSrite[i].position.set(-340, -270 + i * 80)
+            let nameLeadGamer = new PIXI.Text(arrayGamers[i].name, new FontStyle(colorLeadPLace[i], 45));
+            nameLeadGamer.position.set(80, 11)
+            leadPlaceSrite[i].addChild(nameLeadGamer);
+            let scoreLeadSprite = PIXI.Sprite.from("assets/image/UI/highleader_scores_plate.png");
+            scoreLeadSprite.width = 180;
+            scoreLeadSprite.position.set(170, -255 + i * 80)
+            let scoreLeadGamers = new PIXI.Text(arrayGamers[i].score, new FontStyle(colorLeadPLace[i], 40));
+            scoreLeadGamers.position.set(scoreLeadSprite.width / 2 - scoreLeadGamers.width / 2, -2);
+            scoreLeadSprite.addChild(scoreLeadGamers);
+            rowResultTable = new PIXI.Container();
+            rowResultTable.addChild(leadPlaceSrite[i], scoreLeadSprite);
+            rowResultTable.visible = false;
+            resultsTable.addChild(rowResultTable);
+        }
+        if (i > 2) {
+            let positionText = new PIXI.Text(i + 1, fontStylePosition);
+            positionText.position.set(-35 - positionText.width/2 , -5);
+            let nameGamers = PIXI.Sprite.from('assets/image/UI/midleader_name_plate.png');
+            nameGamers.x = -267;
+            let textNameGamers = new PIXI.Text(arrayGamers[i].name, fontStyleListGamers);
+            textNameGamers.position.set(20, -2);
+            nameGamers.addChild(positionText, textNameGamers);
+            let scoreGamers = PIXI.Sprite.from('assets/image/UI/midleader_scores_plate.png');
+            scoreGamers.width = 165;
+            scoreGamers.x = 178;
+            let textScoreGamers = new PIXI.Text(arrayGamers[i].score, fontStyleListGamers);
+            scoreGamers.addChild(textScoreGamers);
+            textScoreGamers.position.set(scoreGamers.width / 2 - textScoreGamers.width / 2, -2);
+            rowResultTable = new PIXI.Container();
+            rowResultTable.addChild(nameGamers, scoreGamers);
+            rowResultTable.y = rowResultTable.height * 0.55 * i - 175;
+            rowResultTable.visible = false;
+            resultsTable.addChild(rowResultTable);
+        }
     }
     return resultsTable;
 }
-//-----Игра
+//-----Игра -------------------------------------------------------------//
 function game() {
     let childrenConteinerSetup = containerSetup.children;
     textGameProcess.position.set(app.screen.width / 2, app.screen.height / 2 - textGameProcess.height / 2);
