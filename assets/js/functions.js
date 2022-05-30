@@ -1,6 +1,5 @@
-import { app, FontStyle } from './main.js';
-// import { FontStyle } from './font_style.js';
-
+import {app} from './main.js';
+import { FontStyle } from './font_style.js';
 let containerSetup;
 let containerHeader;
 let containerFormIntro;
@@ -11,15 +10,11 @@ export let playerName = "Alex";
 export let score = 55;
 export let coin = "0"
 export let distance = "0";
+let namePeriod = 0;
+let results = [];
+
 
 // PIXI.Loader.registerPlugin(PIXI.WebfontLoaderPlugin);
-
-
-
-
-
-
-
 
 //Текст в игровоёй сессии 
 const textGameProcess = new PIXI.Text("Game session in progress!", new FontStyle("#CC1222", 80, undefined, true))
@@ -414,6 +409,7 @@ function createFormIntro() {
         this.texture = buttonLeadBoardPress;
         containerFormIntro.visible = false;
         containerFormLeaderBoard.visible = true;
+        showLinesTable();
     }
 
     function onLeadBoardButtonUp() {
@@ -421,6 +417,7 @@ function createFormIntro() {
         if (this.isOver) {
             this.texture = buttonLeadBoardHover;
         }
+        hideLinesTable();
     }
 
     function onLeadBoardButtonOver() {
@@ -523,6 +520,7 @@ function createFormGameOver() {
         this.texture = buttonOkPress;
         containerFormGameOver.visible = false;
         containerFormLeaderBoard.visible = true;
+        showLinesTable;
     }
 
     const resultContainer = new PIXI.Container();
@@ -555,8 +553,6 @@ function createFormGameOver() {
 }
 //----- Форма "Результаты" ----------------------------------------------//
 function createFormLeaderBoard() {
-
-    let namePeriod = 0;
 
     containerFormLeaderBoard = new PIXI.Container()
     app.stage.addChild(containerFormLeaderBoard);
@@ -621,7 +617,7 @@ function createFormLeaderBoard() {
     arrowButtonBack.position.set(-240, -345)
     formLeaderBoard.addChild(arrowButtonForward, arrowButtonBack);
 
-    //-----Таблица результатов
+    //-----Таблицы результатов
 
     let arrayGamers = [
         { name: "Anna", score: 12345 },
@@ -646,10 +642,11 @@ function createFormLeaderBoard() {
         { name: "-", score: "-" },
         { name: "-", score: "-" },
         { name: "-", score: "-" },
-    ]
+    ];
+
     let emptyArrayGamersWeek = JSON.parse(JSON.stringify(emptyArrayGamersMonth));
     emptyArrayGamersWeek[0].name = "Cat";                                        ///<-----для проверки
-    let results = [];
+    
     let resultsAlltime = createResultsTable(arrayGamers);
     let resultsMonth = createResultsTable(emptyArrayGamersMonth);
     let resultsWeek = createResultsTable(emptyArrayGamersWeek);
@@ -665,24 +662,7 @@ function createFormLeaderBoard() {
     // formLeaderBoard.addChild(textLoad);
     // textLoad.position.set(-textLoad.width / 2, -textLoad.height / 2);
     // textLoad.visible = false;
-    const showLinesTable = (namePeriod) => {
-        let temp = results[namePeriod].children;
-        for (let i = 0; i < temp.length; i++) {
-            setTimeout(() => {
-                temp[i].visible = true;
-            }, 100 * i);
-        }
-    }
-
-    const hideLinesTable = (namePeriod) => {
-        let temp = results[namePeriod].children;
-        for (let i = 0; i < temp.length; i++) {
-            temp[i].visible = false;
-        }
-    }
-
-    showLinesTable(namePeriod); //<----- вывод строк таблицы
-
+  
     //Событие при нажатии на кнопку "ОК"
     function onButtonOkPressLeaderBoard() {
         const buttonOkPress = PIXI.Texture.from('assets/image/UI/ok_button_press.png');
@@ -698,7 +678,7 @@ function createFormLeaderBoard() {
         this.isdown = true;
         this.texture = arrowPress;
         results[namePeriod].visible = false;
-        hideLinesTable(namePeriod);
+        //hideLinesTable(namePeriod);
         periodFormLeaderBoard.text = massivePeriod[++namePeriod];
         if (namePeriod < 3) {
             results[namePeriod].visible = true;
@@ -745,7 +725,7 @@ function createFormLeaderBoard() {
             results[namePeriod].visible = true;
             showLinesTable(namePeriod);
             results[namePeriod + 1].visible = false;
-            hideLinesTable(namePeriod + 1);
+            // hideLinesTable(namePeriod + 1);
         }
         if (namePeriod < 0) {
             namePeriod = massivePeriod.length - 1;
@@ -756,6 +736,46 @@ function createFormLeaderBoard() {
         }
     }
 }
+//-----Игра -------------------------------------------------------------//
+function game() {
+    let childrenConteinerSetup = containerSetup.children;
+    textGameProcess.position.set(app.screen.width / 2, app.screen.height / 2 - textGameProcess.height / 2);
+    textGameProcess.visible = true;
+    textGameProcess.anchor.set(0.5);
+    ticker = PIXI.Ticker.shared;
+    ticker.start();
+    app.stage.addChild(textGameProcess);
+
+    let fontSize = 0; // для работы с высотой и длинной текста игровой сессии
+    ticker.add(() => {
+        fontSize += 0.015;
+        textGameProcess.scale.x = Math.sin(fontSize);
+        textGameProcess.scale.y = 2 - Math.cos(fontSize);
+
+        childrenConteinerSetup[0].tilePosition.x -= 0.1;
+        childrenConteinerSetup[1].tilePosition.x -= 2;
+        childrenConteinerSetup[2].position.x -= 5;
+        childrenConteinerSetup[3].position.x += 1;
+        childrenConteinerSetup[4].position.x -= 2;
+        childrenConteinerSetup[5].position.x -= 6;
+        childrenConteinerSetup[6].position.x -= 4;
+        moveSprite();
+        function moveSprite() {
+            for (let sprite of childrenConteinerSetup) {
+                if (sprite.position.x == Math.round(-sprite.width)) {
+                    sprite.position.x = app.screen.width;
+                }
+            }
+        }
+    })
+
+    setTimeout(() => {
+        containerFormGameOver.visible = true;
+        textGameProcess.visible = false;
+        ticker.stop();
+    }, 10000);
+}
+
 //----- Кнопка "OK" -----------------------------------------------------//
 function createButtonOk() {
     const buttonOkActive = PIXI.Texture.from('assets/image/UI/ok_button_active.png');
@@ -785,6 +805,7 @@ function createButtonOk() {
         this.texture = buttonOkActive;
     }
 }
+
 //----- Таблица Результатов ---------------------------------------------//
 function createResultsTable(arrayGamers) {
     const resultsTable = new PIXI.Container(); // <-------таблица
@@ -837,42 +858,20 @@ function createResultsTable(arrayGamers) {
     }
     return resultsTable;
 }
-//-----Игра -------------------------------------------------------------//
-function game() {
-    let childrenConteinerSetup = containerSetup.children;
-    textGameProcess.position.set(app.screen.width / 2, app.screen.height / 2 - textGameProcess.height / 2);
-    textGameProcess.visible = true;
-    textGameProcess.anchor.set(0.5);
-    ticker = PIXI.Ticker.shared;
-    ticker.start();
-    app.stage.addChild(textGameProcess);
 
-    let fontSize = 0; // для работы с высотой и длинной текста игровой сессии
-    ticker.add(() => {
-        fontSize += 0.015;
-        textGameProcess.scale.x = Math.sin(fontSize);
-        textGameProcess.scale.y = 2 - Math.cos(fontSize);
+//----- Вывод таблицы результатов ---------------------------------------//
+const showLinesTable = () => {
+    let temp = results[namePeriod].children;
+    for (let i = 0; i < temp.length; i++) {
+        setTimeout(() => {
+            temp[i].visible = true;
+        }, 100 * i);
+    }
+}
 
-        childrenConteinerSetup[0].tilePosition.x -= 0.1;
-        childrenConteinerSetup[1].tilePosition.x -= 2;
-        childrenConteinerSetup[2].position.x -= 5;
-        childrenConteinerSetup[3].position.x += 1;
-        childrenConteinerSetup[4].position.x -= 2;
-        childrenConteinerSetup[5].position.x -= 6;
-        childrenConteinerSetup[6].position.x -= 4;
-        moveSprite();
-        function moveSprite() {
-            for (let sprite of childrenConteinerSetup) {
-                if (sprite.position.x == Math.round(-sprite.width)) {
-                    sprite.position.x = app.screen.width;
-                }
-            }
-        }
-    })
-
-    setTimeout(() => {
-        containerFormGameOver.visible = true;
-        textGameProcess.visible = false;
-        ticker.stop();
-    }, 10000);
+const hideLinesTable = () => {
+    let temp = results[namePeriod].children;
+    for (let j = 0; j < temp.length; j++) {
+        temp[i].visible = false;
+    }
 }

@@ -11,63 +11,6 @@
       background-image: url(../image/xiaomi_back.jpg);
       font-family: 'Zubilo';
     }
-
-/* 
-     .container {
-      width: 1280px;
-      height: 100%;
-      margin: 0 auto;
-      position: relative;
-    }
-    .header {
-      height: var(--header-height);
-      width: 100%;
-      color: rgba(255, 255, 255, 0);
-    }
-    .subContainer {
-      width: 680px;
-      margin: 0 auto;
-      height: 100%;
-    }
-    .gameContainer {
-      margin-top: 100px;
-      height: 640px;
-      width: 100%;
-      position: absolute;
-      top: 0;
-    }
-    @media (max-width: 1280px) and (min-width: 600px) {
-        .container {
-            width: 100%;
-        }
-        .subContainer {
-            width: 100%;
-            border: none;
-        }
-        .gameContainer {
-            margin-top: 0px;
-            height: 100%;
-        }
-        .header {
-            height:0px;
-        }
-    }
-    @media (max-width: 600px), only screen  and (hover: none) and (pointer: coarse) {
-      .container {
-        width: 100%;
-      }
-      .subContainer {
-        width: 100%;
-        border: none;
-      }
-      .gameContainer {
-        margin-top: 0px;
-        height: 100%;
-      }
-      .header {
-        height:0px;
-      }
-    }  */
 #gamePlace{
   width: 100%;
   display: flex;
@@ -78,7 +21,6 @@
 @font-face {
     font-family: 'Zubilo';
     src: url(../fonts/Zubilo.otf);
-    /* src: url("//db.onlinewebfonts.com/t/420d8b39e5415c89c739135c7fe664cc.woff2") format("woff2"); */
 }  
 
 
