@@ -1,5 +1,5 @@
-import { app } from './main.js';
-import { FontStyle } from './font_style.js';
+import { app, FontStyle } from './main.js';
+// import { FontStyle } from './font_style.js';
 
 let containerSetup;
 let containerHeader;
@@ -11,6 +11,15 @@ export let playerName = "Alex";
 export let score = 55;
 export let coin = "0"
 export let distance = "0";
+
+// PIXI.Loader.registerPlugin(PIXI.WebfontLoaderPlugin);
+
+
+
+
+
+
+
 
 //Текст в игровоёй сессии 
 const textGameProcess = new PIXI.Text("Game session in progress!", new FontStyle("#CC1222", 80, undefined, true))
@@ -651,21 +660,21 @@ function createFormLeaderBoard() {
     resultsAlltime.visible = true;
     resultsMonth.visible = false;
     resultsWeek.visible = false;
-    
+
     // let textLoad = new PIXI.Text("Загрузка...", new FontStyle("#00295D", 80));
     // formLeaderBoard.addChild(textLoad);
     // textLoad.position.set(-textLoad.width / 2, -textLoad.height / 2);
     // textLoad.visible = false;
     const showLinesTable = (namePeriod) => {
         let temp = results[namePeriod].children;
-            for (let i = 0; i < temp.length; i++) {
-                setTimeout(() => {
-                    temp[i].visible = true;
-                }, 100 * i);
-            }
+        for (let i = 0; i < temp.length; i++) {
+            setTimeout(() => {
+                temp[i].visible = true;
+            }, 100 * i);
+        }
     }
 
-    const hideLinesTable = (namePeriod) =>{
+    const hideLinesTable = (namePeriod) => {
         let temp = results[namePeriod].children;
         for (let i = 0; i < temp.length; i++) {
             temp[i].visible = false;
@@ -779,7 +788,7 @@ function createButtonOk() {
 //----- Таблица Результатов ---------------------------------------------//
 function createResultsTable(arrayGamers) {
     const resultsTable = new PIXI.Container(); // <-------таблица
-    let rowResultTable ; //<--------строка в таблице результатов
+    let rowResultTable; //<--------строка в таблице результатов
     let leadPlaceSrite = [PIXI.Sprite.from("assets/image/UI/place_1.png"),
     PIXI.Sprite.from("assets/image/UI/place_2.png"),
     PIXI.Sprite.from("assets/image/UI/place_3.png")];
@@ -807,7 +816,7 @@ function createResultsTable(arrayGamers) {
         }
         if (i > 2) {
             let positionText = new PIXI.Text(i + 1, fontStylePosition);
-            positionText.position.set(-35 - positionText.width/2 , -5);
+            positionText.position.set(-35 - positionText.width / 2, -5);
             let nameGamers = PIXI.Sprite.from('assets/image/UI/midleader_name_plate.png');
             nameGamers.x = -267;
             let textNameGamers = new PIXI.Text(arrayGamers[i].name, fontStyleListGamers);
