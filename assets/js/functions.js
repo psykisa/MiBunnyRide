@@ -12,9 +12,7 @@ export let coin = "0"
 export let distance = "0";
 let namePeriod = 0;
 let results = [];
-
-// PIXI.Loader.registerPlugin(PIXI.WebfontLoaderPlugin);
-
+let textLoad = "";
 //Текст в игровоёй сессии 
 const textGameProcess = new PIXI.Text("Game session in progress!", new FontStyle("#CC1222", 80, undefined, true))
 textGameProcess.visible = false;
@@ -109,7 +107,6 @@ function createControlPanel() {
     formOfCoin.width = 192;
     formOfCoin.position.set(68, 12);
     const amountOfCoin = new PIXI.Text(coin, new FontStyle('#FFFFFF'));
-    // amountOfCoin.x = formOfCoin.width / 2 - amountOfCoin.width / 2;
     formOfCoin.addChild(amountOfCoin);
     coinContainer.addChild(coinIcon, formOfCoin);
     coinContainer.scale.set(0.7);
@@ -188,7 +185,6 @@ function createControlPanel() {
             app.renderer.view.style.width = 100 + "%";
             app.renderer.view.style.height = 100 + "%";
         }
-
     }
 
     function onGrowButtonUp() {
@@ -665,13 +661,14 @@ function createFormLeaderBoard() {
     formLeaderBoard.addChild(resultsMonth);
     formLeaderBoard.addChild(resultsWeek);
     results.push(resultsAlltime, resultsMonth, resultsWeek);
-    resultsAlltime.visible = true;
-    resultsMonth.visible = false;
-    resultsWeek.visible = false;
-    // let textLoad = new PIXI.Text("Загрузка...", new FontStyle("#00295D", 80));
-    // formLeaderBoard.addChild(textLoad);
-    // textLoad.position.set(-textLoad.width / 2, -textLoad.height / 2);
-    // textLoad.visible = false;
+    // resultsAlltime.visible = true;
+    // resultsMonth.visible = false;
+    // resultsWeek.visible = false;
+
+    textLoad = new PIXI.Text("Загрузка...", new FontStyle("#00295D", 80));
+    formLeaderBoard.addChild(textLoad);
+    textLoad.position.set(-textLoad.width / 2, -textLoad.height / 2);
+    textLoad.visible = false;
 
     //Событие при нажатии на кнопку "ОК"
     function onButtonOkPressLeaderBoard() {
@@ -864,12 +861,16 @@ function createResultsTable(arrayGamers) {
 const showLinesTable = () => {
     let temp = results[namePeriod].children;
     hideLinesTable();
-    results[namePeriod].visible = true;
-    for (let i = 0; i < temp.length; i++) {
-        setTimeout(() => {
-            temp[i].visible = true;
-        }, 100 * i);
-    }
+    textLoad.visible = true;
+    setTimeout(() =>{
+        textLoad.visible = false;
+        results[namePeriod].visible = true;
+        for (let i = 0; i < temp.length; i++) {
+            setTimeout(() => {
+                temp[i].visible = true;
+            }, 100 * i);
+        }
+    }, 700);
 }
 const hideLinesTable = () => {
     results[namePeriod].children.forEach(element => {
