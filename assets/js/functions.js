@@ -1,4 +1,4 @@
-import {app} from './main.js';
+import { app } from './main.js';
 import { FontStyle } from './font_style.js';
 let containerSetup;
 let containerHeader;
@@ -12,7 +12,6 @@ export let coin = "0"
 export let distance = "0";
 let namePeriod = 0;
 let results = [];
-
 
 // PIXI.Loader.registerPlugin(PIXI.WebfontLoaderPlugin);
 
@@ -417,7 +416,6 @@ function createFormIntro() {
         if (this.isOver) {
             this.texture = buttonLeadBoardHover;
         }
-        hideLinesTable();
     }
 
     function onLeadBoardButtonOver() {
@@ -520,7 +518,7 @@ function createFormGameOver() {
         this.texture = buttonOkPress;
         containerFormGameOver.visible = false;
         containerFormLeaderBoard.visible = true;
-        showLinesTable;
+        showLinesTable();
     }
 
     const resultContainer = new PIXI.Container();
@@ -549,11 +547,9 @@ function createFormGameOver() {
         textDistanceFormGameOver.x = (resultContainer.width - textDistanceFormGameOver.width) / 2 + 150;
     }
     setDistance(123);
-
 }
 //----- Форма "Результаты" ----------------------------------------------//
 function createFormLeaderBoard() {
-
     containerFormLeaderBoard = new PIXI.Container()
     app.stage.addChild(containerFormLeaderBoard);
     containerFormLeaderBoard.visible = false;
@@ -644,9 +640,22 @@ function createFormLeaderBoard() {
         { name: "-", score: "-" },
     ];
 
-    let emptyArrayGamersWeek = JSON.parse(JSON.stringify(emptyArrayGamersMonth));
-    emptyArrayGamersWeek[0].name = "Cat";                                        ///<-----для проверки
-    
+    let emptyArrayGamersWeek = [
+        { name: "1", score: "-" },
+        { name: "2", score: "-" },
+        { name: "3", score: "-" },
+        { name: "4", score: "-" },
+        { name: "5", score: "-" },
+        { name: "6", score: "-" },
+        { name: "7", score: "-" },
+        { name: "8", score: "-" },
+        { name: "9", score: "-" },
+        { name: "10", score: "-" },
+    ];
+
+    // let emptyArrayGamersWeek = JSON.parse(JSON.stringify(emptyArrayGamersMonth));
+    // emptyArrayGamersWeek[0].name = "Cat";                                        ///<-----для проверки
+
     let resultsAlltime = createResultsTable(arrayGamers);
     let resultsMonth = createResultsTable(emptyArrayGamersMonth);
     let resultsWeek = createResultsTable(emptyArrayGamersWeek);
@@ -657,12 +666,11 @@ function createFormLeaderBoard() {
     resultsAlltime.visible = true;
     resultsMonth.visible = false;
     resultsWeek.visible = false;
-
     // let textLoad = new PIXI.Text("Загрузка...", new FontStyle("#00295D", 80));
     // formLeaderBoard.addChild(textLoad);
     // textLoad.position.set(-textLoad.width / 2, -textLoad.height / 2);
     // textLoad.visible = false;
-  
+
     //Событие при нажатии на кнопку "ОК"
     function onButtonOkPressLeaderBoard() {
         const buttonOkPress = PIXI.Texture.from('assets/image/UI/ok_button_press.png');
@@ -670,25 +678,23 @@ function createFormLeaderBoard() {
         this.texture = buttonOkPress;
         containerFormLeaderBoard.visible = false;
         containerFormIntro.visible = true;
+        hideLinesTable();
         namePeriod = 0;
-        periodFormLeaderBoard.text = massivePeriod[namePeriod]
+        periodFormLeaderBoard.text = massivePeriod[namePeriod];
     }
     //События кнопок "Вперед" и "Назад"
     function onArrowButtonForwardDown() {
         this.isdown = true;
         this.texture = arrowPress;
         results[namePeriod].visible = false;
-        //hideLinesTable(namePeriod);
         periodFormLeaderBoard.text = massivePeriod[++namePeriod];
         if (namePeriod < 3) {
-            results[namePeriod].visible = true;
-            showLinesTable(namePeriod);
+            showLinesTable();
         }
         if (namePeriod == 3) {
             results[namePeriod - 1].visible = false;
             namePeriod = 0;
-            results[namePeriod].visible = true;
-            showLinesTable(namePeriod);
+            showLinesTable();
             periodFormLeaderBoard.text = massivePeriod[namePeriod];
         }
     }
@@ -719,20 +725,16 @@ function createFormLeaderBoard() {
     function onArrowButtonBackDown() {
         this.isdown = true;
         this.texture = arrowPress;
-        hideLinesTable(namePeriod);
+        results[0].visible = false
         periodFormLeaderBoard.text = massivePeriod[--namePeriod];
         if (namePeriod >= 0) {
-            results[namePeriod].visible = true;
-            showLinesTable(namePeriod);
             results[namePeriod + 1].visible = false;
-            // hideLinesTable(namePeriod + 1);
+            showLinesTable();
         }
         if (namePeriod < 0) {
             namePeriod = massivePeriod.length - 1;
-            results[namePeriod].visible = true;
-            showLinesTable(namePeriod);
+            showLinesTable();
             periodFormLeaderBoard.text = massivePeriod[namePeriod];
-
         }
     }
 }
@@ -775,7 +777,6 @@ function game() {
         ticker.stop();
     }, 10000);
 }
-
 //----- Кнопка "OK" -----------------------------------------------------//
 function createButtonOk() {
     const buttonOkActive = PIXI.Texture.from('assets/image/UI/ok_button_active.png');
@@ -805,7 +806,6 @@ function createButtonOk() {
         this.texture = buttonOkActive;
     }
 }
-
 //----- Таблица Результатов ---------------------------------------------//
 function createResultsTable(arrayGamers) {
     const resultsTable = new PIXI.Container(); // <-------таблица
@@ -858,20 +858,19 @@ function createResultsTable(arrayGamers) {
     }
     return resultsTable;
 }
-
 //----- Вывод таблицы результатов ---------------------------------------//
 const showLinesTable = () => {
     let temp = results[namePeriod].children;
+    hideLinesTable();
+    results[namePeriod].visible = true;
     for (let i = 0; i < temp.length; i++) {
         setTimeout(() => {
             temp[i].visible = true;
         }, 100 * i);
     }
 }
-
 const hideLinesTable = () => {
-    let temp = results[namePeriod].children;
-    for (let j = 0; j < temp.length; j++) {
-        temp[i].visible = false;
-    }
+    results[namePeriod].children.forEach(element => {
+        element.visible = false;
+    });
 }
