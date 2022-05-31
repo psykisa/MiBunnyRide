@@ -182,9 +182,11 @@ function createControlPanel() {
         this.texture = pressGrowButton;
         if (app.renderer.view.style.width == 100 + "%") {
             app.renderer.view.style.width = 1280 + "px";
+            app.renderer.view.style.height = 640 + "px";
         }
         else {
-            app.renderer.view.style.width = 100 + "%"
+            app.renderer.view.style.width = 100 + "%";
+            app.renderer.view.style.height = 100 + "%";
         }
 
     }

@@ -1,14 +1,23 @@
 //? НЕ ЗАБЫТЬ!!!
 //TODO шрифт, разобраться с выводм лидерборда(пушить в массив а потом выводить или каждый раз вызывать create)
-
+ let _width = 1280;
+ let _height = 640;
 import {setup} from './functions.js'
  let gamePlace = document.getElementById("gamePlace");
 export const app = new PIXI.Application({
-    width: 1280,
-    height: 640,
+    width: _width,
+    height: _height,
     backgroundColor: 0X6F9ACA,
     resolution: window.devicePixelRatio || 1,
+    autoDensity: true,
 });
+
+window.addEventListener('resize', resize);
+function resize(){
+    _width = window.innerWidth;
+    _height = window.innerHeight;
+    app.resize(_width, _height);
+}
 app.stage.sortableChildren = true;
 app.renderer.autoResize = true;
 app.stage.interactive = true;
