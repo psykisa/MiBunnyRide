@@ -1,9 +1,11 @@
-import{app} from './main.js';
-import {coin} from './functions.js';
+import { app } from './main.js';
+import { variable } from './varables.js';
+import { ticker } from './game.js';
 import { FontStyle } from './font_style.js';
 
-export let containerHeader;
+let coin = variable.coin;
 
+export let containerHeader;
 export function createControlPanel() {
     containerHeader = new PIXI.Container();
     app.stage.addChild(containerHeader);
@@ -47,7 +49,7 @@ export function createControlPanel() {
         coin = value;
         amountOfCoin.text = coin;
         amountOfCoin.x = formOfCoin.width / 2 - amountOfCoin.width / 2;
-        amountOfCoin.y = formOfCoin.height/2 - amountOfCoin.height / 2;
+        amountOfCoin.y = formOfCoin.height / 2 - amountOfCoin.height / 2;
     }
     setCoin(coin);
 

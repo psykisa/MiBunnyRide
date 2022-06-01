@@ -1,8 +1,8 @@
-import {app} from './main.js';
-import {createControlPanel} from './control_panel.js';
-import {createFormIntro,
-        createFormGameOver,
-        createFormLeaderBoard} from './functions.js';
+import { app } from './main.js';
+import { createControlPanel } from './control_panel.js';
+import { createFormIntro } from './form_intro.js';
+import { createFormGameOver } from './form_gameover.js';
+import { createFormLeaderBoard } from './form_leaderboard.js';
 
 export let containerSetup;
 
