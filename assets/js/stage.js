@@ -1,10 +1,10 @@
 import {app} from './main.js';
-import {createControlPanel,
-        createFormIntro,
+import {createControlPanel} from './control_panel.js';
+import {createFormIntro,
         createFormGameOver,
         createFormLeaderBoard} from './functions.js';
 
- export let containerSetup;
+export let containerSetup;
 
 export function setup() {
     containerSetup = new PIXI.Container()
