@@ -1,6 +1,6 @@
- :root {
+ /* :root {
       --header-height: 50px;
-    }
+    } */
     html, body {
       width: 100%;
       height: 100%;
@@ -9,7 +9,7 @@
       background-size: 3000px;
       background-repeat: repeat;
       background-image: url(../image/xiaomi_back.jpg);
-      font-family: 'Zubilo';
+      /* font-family: 'Zubilo'; */
     }
 #gamePlace{
   width: 100%;

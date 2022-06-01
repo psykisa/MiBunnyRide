@@ -1,6 +1,8 @@
 //? НЕ ЗАБЫТЬ!!!
-//TODO шрифт, разобраться с выводм лидерборда(пушить в массив а потом выводить или каждый раз вызывать create)
+//TODO шрифт
 import { setup } from './functions.js'
+//PIXI.Loader.registerPlugin(PIXI.WebfontLoaderPlugin);
+WebFont.load();
 let _width = 1280;
 let _height = 640;
 let gamePlace = document.getElementById("gamePlace");

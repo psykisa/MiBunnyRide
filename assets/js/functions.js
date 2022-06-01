@@ -1,18 +1,20 @@
 import { app } from './main.js';
 import { FontStyle } from './font_style.js';
+
 let containerSetup;
 let containerHeader;
 let containerFormIntro;
 let containerFormGameOver;
 let containerFormLeaderBoard;
 let ticker;
-export let playerName = "Alex";
-export let score = 55;
-export let coin = "0"
-export let distance = "0";
-let namePeriod = 0;
 let results = [];
-let textLoad = "";
+let textLoad;
+let playerName = "Alex";
+let score = 555;
+let coin = "999";
+let distance = "135";
+let namePeriod = 0;
+
 //Текст в игровоёй сессии 
 const textGameProcess = new PIXI.Text("Game session in progress!", new FontStyle("#CC1222", 80, undefined, true))
 textGameProcess.visible = false;
@@ -118,7 +120,7 @@ function createControlPanel() {
         amountOfCoin.text = coin;
         amountOfCoin.x = formOfCoin.width / 2 - amountOfCoin.width / 2;
     }
-    setCoin(555);
+    setCoin(coin);
 
     //----- Панель  с кнопками ------//
     const headerMenu = new PIXI.Container();
@@ -544,7 +546,7 @@ function createFormGameOver() {
         textDistanceFormGameOver.text = distance + " м";
         textDistanceFormGameOver.x = (resultContainer.width - textDistanceFormGameOver.width) / 2 + 150;
     }
-    setDistance(123);
+    setDistance(distance);
 }
 //----- Форма "Результаты" ----------------------------------------------//
 function createFormLeaderBoard() {
