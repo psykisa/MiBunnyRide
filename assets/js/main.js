@@ -1,8 +1,5 @@
-//? НЕ ЗАБЫТЬ!!!
-//TODO шрифт
-import { setup } from './functions.js'
-//PIXI.Loader.registerPlugin(PIXI.WebfontLoaderPlugin);
-WebFont.load();
+import { setup } from './stage.js'
+
 let _width = 1280;
 let _height = 640;
 let gamePlace = document.getElementById("gamePlace");
@@ -19,4 +16,5 @@ app.stage.interactive = true;
 app.stage.cursor = "pointer";
 gamePlace.appendChild(app.view);
 setup();
+
 //console.log("Данные 0 : " + app.screen.width) //<--------------------------------------считалка

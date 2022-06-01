@@ -1,7 +1,5 @@
 /*-----Шрифт для форм-----*/
-export{FontStyle}
-
- class FontStyle {
+ export class FontStyle {
     constructor(fill, fontSize = 60, fontFamily = 'Zubilo', dropShadow = false,) {
         this.fill = fill;
         this.fontSize = fontSize;

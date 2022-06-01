@@ -9,7 +9,6 @@
       background-size: 3000px;
       background-repeat: repeat;
       background-image: url(../image/xiaomi_back.jpg);
-      /* font-family: 'Zubilo'; */
     }
 #gamePlace{
   width: 100%;
@@ -18,9 +17,12 @@
   align-items: center;
   color: rgba(255, 255, 255, 0);
 }
+
 @font-face {
-    font-family: 'Zubilo';
-    src: url(../fonts/Zubilo.otf);
-}  
-
-
+  font-family: 'Zubilo';
+  src: url('../fonts/ZubiloBlack.woff2') format('woff2'),
+       url('../fonts/ZubiloBlack.woff') format('woff');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}

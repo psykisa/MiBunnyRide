@@ -1,83 +1,85 @@
 import { app } from './main.js';
 import { FontStyle } from './font_style.js';
+import { containerSetup } from './stage.js';
 
-let containerSetup;
-let containerHeader;
-let containerFormIntro;
-let containerFormGameOver;
-let containerFormLeaderBoard;
-let ticker;
+// export let containerSetup;
+export let containerHeader;
+export let containerFormIntro;
+export let containerFormGameOver;
+export let containerFormLeaderBoard;
+export let ticker;
 let results = [];
 let textLoad;
 let playerName = "Alex";
 let score = 555;
-let coin = "999";
+let coin = "10";
 let distance = "135";
 let namePeriod = 0;
+
 
 //Текст в игровоёй сессии 
 const textGameProcess = new PIXI.Text("Game session in progress!", new FontStyle("#CC1222", 80, undefined, true))
 textGameProcess.visible = false;
 
 //----- Setup -----------------------------------------------------------//
-export function setup() {
-    containerSetup = new PIXI.Container()
+// export function setup() {
+//     containerSetup = new PIXI.Container()
 
-    const mountain = PIXI.Texture.from("assets/image/Environment/back_rocks.png");
-    const backgroundMountains = new PIXI.TilingSprite(mountain, app.screen.width, app.screen.height - app.screen.height / 2);
-    backgroundMountains.tileScale.set(0.5);
-    backgroundMountains.y = app.screen.height - backgroundMountains.height;
+//     const mountain = PIXI.Texture.from("assets/image/Environment/back_rocks.png");
+//     const backgroundMountains = new PIXI.TilingSprite(mountain, app.screen.width, app.screen.height - app.screen.height / 2);
+//     backgroundMountains.tileScale.set(0.5);
+//     backgroundMountains.y = app.screen.height - backgroundMountains.height;
 
-    const ice = PIXI.Texture.from("assets/image/Environment/floor.png");
-    const iceFloor = new PIXI.TilingSprite(ice, app.screen.width, app.screen.height - app.screen.height * 0.9);
-    iceFloor.y = app.screen.height - iceFloor.height;
-    const sunTexture = PIXI.Texture.from("assets/image/Environment/bg_sun.png");
-    const sunSprite = new PIXI.Sprite(sunTexture);
-    sunSprite.width = 415;
-    sunSprite.height = 415;
+//     const ice = PIXI.Texture.from("assets/image/Environment/floor.png");
+//     const iceFloor = new PIXI.TilingSprite(ice, app.screen.width, app.screen.height - app.screen.height * 0.9);
+//     iceFloor.y = app.screen.height - iceFloor.height;
+//     const sunTexture = PIXI.Texture.from("assets/image/Environment/bg_sun.png");
+//     const sunSprite = new PIXI.Sprite(sunTexture);
+//     sunSprite.width = 415;
+//     sunSprite.height = 415;
 
-    const airshipSprite = PIXI.Sprite.from("assets/image/Environment/airship.png");
-    airshipSprite.height = 90;
-    airshipSprite.width = 174;
-    airshipSprite.position.set(10, 150);
+//     const airshipSprite = PIXI.Sprite.from("assets/image/Environment/airship.png");
+//     airshipSprite.height = 90;
+//     airshipSprite.width = 174;
+//     airshipSprite.position.set(10, 150);
 
-    const treeOne = PIXI.Texture.from("assets/image/Environment/tree_1.png");
-    const treeOneSprite = new PIXI.Sprite(treeOne);
-    treeOneSprite.height = 160;
-    treeOneSprite.width = 148;
-    treeOneSprite.position.set(20, app.screen.height - treeOneSprite.height * 1.3);
+//     const treeOne = PIXI.Texture.from("assets/image/Environment/tree_1.png");
+//     const treeOneSprite = new PIXI.Sprite(treeOne);
+//     treeOneSprite.height = 160;
+//     treeOneSprite.width = 148;
+//     treeOneSprite.position.set(20, app.screen.height - treeOneSprite.height * 1.3);
 
-    const treeTwo = PIXI.Texture.from("assets/image/Environment/tree_2.png");
-    const treeTwoSprite = new PIXI.Sprite(treeTwo);
-    treeTwoSprite.height = 104;
-    treeTwoSprite.width = 112;
-    treeTwoSprite.position.set(app.screen.width - treeTwoSprite.width * 1.5, app.screen.height - treeTwoSprite.height * 1.5);
+//     const treeTwo = PIXI.Texture.from("assets/image/Environment/tree_2.png");
+//     const treeTwoSprite = new PIXI.Sprite(treeTwo);
+//     treeTwoSprite.height = 104;
+//     treeTwoSprite.width = 112;
+//     treeTwoSprite.position.set(app.screen.width - treeTwoSprite.width * 1.5, app.screen.height - treeTwoSprite.height * 1.5);
 
-    const treeThreeSprite = new PIXI.Sprite(treeTwo);
-    treeThreeSprite.height = 104;
-    treeThreeSprite.width = 112;
-    treeThreeSprite.position.set(100, app.screen.height - treeThreeSprite.height * 1.45);
+//     const treeThreeSprite = new PIXI.Sprite(treeTwo);
+//     treeThreeSprite.height = 104;
+//     treeThreeSprite.width = 112;
+//     treeThreeSprite.position.set(100, app.screen.height - treeThreeSprite.height * 1.45);
 
-    const bunnySprite = PIXI.Sprite.from("assets/image/Characters/mi_bunny_idle_03.png");
-    bunnySprite.height = 150;
-    bunnySprite.width = 150;
-    bunnySprite.position.set(250, app.screen.height - bunnySprite.height * 1.23);
-    containerSetup.addChild(backgroundMountains,
-        iceFloor,
-        sunSprite,
-        airshipSprite,
-        treeOneSprite,
-        treeTwoSprite,
-        treeThreeSprite,
-        bunnySprite);
-    app.stage.addChild(containerSetup);
-    createControlPanel();
-    createFormIntro()
-    createFormGameOver();
-    createFormLeaderBoard();
-}
+//     const bunnySprite = PIXI.Sprite.from("assets/image/Characters/mi_bunny_idle_03.png");
+//     bunnySprite.height = 150;
+//     bunnySprite.width = 150;
+//     bunnySprite.position.set(250, app.screen.height - bunnySprite.height * 1.23);
+//     containerSetup.addChild(backgroundMountains,
+//         iceFloor,
+//         sunSprite,
+//         airshipSprite,
+//         treeOneSprite,
+//         treeTwoSprite,
+//         treeThreeSprite,
+//         bunnySprite);
+//     app.stage.addChild(containerSetup);
+//     createControlPanel();
+//     createFormIntro()
+//     createFormGameOver();
+//     createFormLeaderBoard();
+// }
 //----- Панель управления -----------------------------------------------//
-function createControlPanel() {
+export function createControlPanel() {
     containerHeader = new PIXI.Container();
     app.stage.addChild(containerHeader);
 
@@ -107,6 +109,7 @@ function createControlPanel() {
     coinIcon.zIndex = 1;
     const formOfCoin = PIXI.Sprite.from('assets/image/UI/coin_score_plate.png');
     formOfCoin.width = 192;
+    formOfCoin.height = 66;
     formOfCoin.position.set(68, 12);
     const amountOfCoin = new PIXI.Text(coin, new FontStyle('#FFFFFF'));
     formOfCoin.addChild(amountOfCoin);
@@ -119,6 +122,7 @@ function createControlPanel() {
         coin = value;
         amountOfCoin.text = coin;
         amountOfCoin.x = formOfCoin.width / 2 - amountOfCoin.width / 2;
+        amountOfCoin.y = formOfCoin.height/2 - amountOfCoin.height / 2;
     }
     setCoin(coin);
 
@@ -253,7 +257,7 @@ function createControlPanel() {
     }
 }
 //----- Форма "Начало игры" ---------------------------------------------//
-function createFormIntro() {
+export function createFormIntro() {
     containerFormIntro = new PIXI.Container();
     containerFormIntro.x = app.screen.width / 2;
     containerFormIntro.y = app.screen.height / 2;
@@ -435,7 +439,7 @@ function createFormIntro() {
     }
 }
 //----- Форма "Окончание игры"- -----------------------------------------//
-function createFormGameOver() {
+export function createFormGameOver() {
     containerFormGameOver = new PIXI.Container();
     app.stage.addChild(containerFormGameOver);
     containerFormGameOver.x = app.screen.width / 2;
@@ -549,7 +553,7 @@ function createFormGameOver() {
     setDistance(distance);
 }
 //----- Форма "Результаты" ----------------------------------------------//
-function createFormLeaderBoard() {
+export function createFormLeaderBoard() {
     containerFormLeaderBoard = new PIXI.Container()
     app.stage.addChild(containerFormLeaderBoard);
     containerFormLeaderBoard.visible = false;
@@ -740,7 +744,7 @@ function createFormLeaderBoard() {
     }
 }
 //-----Игра -------------------------------------------------------------//
-function game() {
+export function game() {
     let childrenConteinerSetup = containerSetup.children;
     textGameProcess.position.set(app.screen.width / 2, app.screen.height / 2 - textGameProcess.height / 2);
     textGameProcess.visible = true;
@@ -872,7 +876,7 @@ const showLinesTable = () => {
                 temp[i].visible = true;
             }, 100 * i);
         }
-    }, 700);
+    }, 300);
 }
 const hideLinesTable = () => {
     results[namePeriod].children.forEach(element => {
