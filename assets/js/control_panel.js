@@ -2,6 +2,9 @@ import { app } from './main.js';
 import { variable } from './varables.js';
 import { ticker } from './game.js';
 import { FontStyle } from './font_style.js';
+import { containerFormIntro } from './form_intro.js';
+import { containerFormGameOver } from './form_gameover.js';
+import { containerFormLeaderBoard } from './form_leaderboard.js';
 
 let coin = variable.coin;
 
@@ -160,12 +163,13 @@ export function createControlPanel() {
         this.isOver = false;
         this.texture = (this.texture === hoverSoundButtonOn) ? activeSoundButtonOn : activeSoundButtonOf;
     }
+
     //кнопка "Пауза"
     function onPauseButtonDown() {
         this.isdown = true;
         this.texture = pressPauseButton;
-        pauseMask.visible = (!pauseMask.visible) ? (true) : false;
-        (pauseMask.visible) ? ticker.stop() : ticker.start();
+        pauseMask.visible = (!pauseMask.visible) ? true : false;
+        (pauseMask.visible || containerFormGameOver.visible || containerFormLeaderBoard.visible || containerFormIntro.visible) ? ticker.stop() : ticker.start();
     }
     function onPauseButtonUp() {
         this.isdown = false;

@@ -3,6 +3,7 @@ import {FontStyle} from './font_style.js';
 import { containerFormIntro } from './form_intro.js';
 import { createResultsTable, createButtonOk, showLinesTable, hideLinesTable } from './functions.js';
 import { variable } from './varables.js';
+import { setup } from './stage.js';
 
 export let containerFormLeaderBoard;
 export let results = [];
@@ -138,6 +139,8 @@ export function createFormLeaderBoard() {
         hideLinesTable();
         variable.namePeriod = 0;
         periodFormLeaderBoard.text = massivePeriod[variable.namePeriod];
+        app.stage.removeChildren();
+        setup();
     }
     //События кнопок "Вперед" и "Назад"
     function onArrowButtonForwardDown() {
