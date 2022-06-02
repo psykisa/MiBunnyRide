@@ -3,9 +3,10 @@ import { FontStyle } from './font_style.js';
 import { containerFormLeaderBoard } from './form_leaderboard.js';
 import { game } from './game.js';
 import {showLinesTable } from './functions.js';
-import { variable } from './varables.js';
+import { variable } from './variables.js';
 
 export let containerFormIntro;
+export let textRecord;
 
 export function createFormIntro() {
     containerFormIntro = new PIXI.Container();
@@ -18,7 +19,7 @@ export function createFormIntro() {
     containerFormIntro.addChild(formIntro);
     formIntro.anchor.set(0.5);
     //рекорды
-    const textRecord = new PIXI.Text('Рекорд: ' + variable.score, new FontStyle("#00FD17", 67, undefined, true));
+    textRecord = new PIXI.Text('Рекорд: ' + variable.recordScore, new FontStyle("#00FD17", 67, undefined, true));
     textRecord.anchor.set(0.5);
     textRecord.style.wordWrap = "true";
     formIntro.addChild(textRecord);

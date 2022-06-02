@@ -1,8 +1,9 @@
 export let variable = {
     playerName : "Alex",
-    score : 555,
-    coin : "10",
-    distance : "135",
+    recordScore : 0,
+    score : 0,
+    coin : 600,
+    distance : 0,
     namePeriod : 0
     };
     

@@ -1,6 +1,6 @@
 import { FontStyle } from './font_style.js';
 import { results, textLoad } from './form_leaderboard.js';
-import { variable } from './varables.js';
+import { variable } from './variables.js';
 
 //----- Кнопка "OK" -----------------------------------------------------//
 export function createButtonOk() {

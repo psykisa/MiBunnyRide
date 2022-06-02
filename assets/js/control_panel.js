@@ -1,14 +1,14 @@
 import { app } from './main.js';
-import { variable } from './varables.js';
+import { variable } from './variables.js';
 import { ticker } from './game.js';
 import { FontStyle } from './font_style.js';
 import { containerFormIntro } from './form_intro.js';
-import { containerFormGameOver } from './form_gameover.js';
+import { containerFormGameOver} from './form_gameover.js';
 import { containerFormLeaderBoard } from './form_leaderboard.js';
 
-let coin = variable.coin;
-
+export let amountOfCoin;
 export let containerHeader;
+
 export function createControlPanel() {
     containerHeader = new PIXI.Container();
     app.stage.addChild(containerHeader);
@@ -22,6 +22,7 @@ export function createControlPanel() {
     pauseMask.tint = 0x000000;
     pauseMask.alpha = 0.5;
     pauseMask.visible = false;
+
     //-----Звук-----//
     const sound = new Howl({
         src: ['assets/sound/speeder.mp3'],
@@ -31,7 +32,6 @@ export function createControlPanel() {
     sound.rate(0.85);
 
     //-------- Поле с монетами -----//
-
     const coinContainer = new PIXI.Container();
     coinContainer.sortableChildren = true;
     coinContainer.position.set(12, 10);
@@ -41,20 +41,13 @@ export function createControlPanel() {
     formOfCoin.width = 192;
     formOfCoin.height = 66;
     formOfCoin.position.set(68, 12);
-    const amountOfCoin = new PIXI.Text(coin, new FontStyle('#FFFFFF'));
+    amountOfCoin = new PIXI.Text(variable.coin, new FontStyle('#FFFFFF'));
+    amountOfCoin.x = formOfCoin.width / 2 - amountOfCoin.width / 2;
+    amountOfCoin.y = formOfCoin.height / 2 - amountOfCoin.height / 2;
     formOfCoin.addChild(amountOfCoin);
     coinContainer.addChild(coinIcon, formOfCoin);
     coinContainer.scale.set(0.7);
     containerHeader.addChild(coinContainer);
-
-    //------------ Количество монет, выравнивание текста в поле с монетами ----------//
-    const setCoin = value => {
-        coin = value;
-        amountOfCoin.text = coin;
-        amountOfCoin.x = formOfCoin.width / 2 - amountOfCoin.width / 2;
-        amountOfCoin.y = formOfCoin.height / 2 - amountOfCoin.height / 2;
-    }
-    setCoin(coin);
 
     //----- Панель  с кнопками ------//
     const headerMenu = new PIXI.Container();

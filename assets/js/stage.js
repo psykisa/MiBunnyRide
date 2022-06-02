@@ -10,7 +10,6 @@ export function setup() {
     containerSetup = new PIXI.Container()
 
     const mountain = PIXI.Texture.from("assets/image/Environment/back_rocks.png");
-    
     const srtaticMountains = new PIXI.Sprite(mountain);
     srtaticMountains.y = 150;
    
@@ -21,10 +20,11 @@ export function setup() {
     const ice = PIXI.Texture.from("assets/image/Environment/floor.png");
     const iceFloor = new PIXI.TilingSprite(ice, app.screen.width, app.screen.height - app.screen.height * 0.9);
     iceFloor.y = app.screen.height - iceFloor.height;
+
     const sunTexture = PIXI.Texture.from("assets/image/Environment/bg_sun.png");
     const sunSprite = new PIXI.Sprite(sunTexture);
-    sunSprite.width = 415;
-    sunSprite.height = 415;
+    sunSprite.width = 215;
+    sunSprite.height = 215;
 
     const airshipSprite = PIXI.Sprite.from("assets/image/Environment/airship.png");
     airshipSprite.height = 90;

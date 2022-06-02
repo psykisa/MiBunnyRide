@@ -2,9 +2,12 @@ import { app } from './main.js';
 import { FontStyle } from './font_style.js';
 import { containerFormLeaderBoard } from './form_leaderboard.js';
 import { createButtonOk, showLinesTable } from './functions.js';
-import { variable } from './varables.js';
+import { variable } from './variables.js';
 
 export let containerFormGameOver;
+export let textCoinFormGameOver;
+export let textDistanceFormGameOver;
+export let textRecordFormGameOver;
 
 export function createFormGameOver() {
     containerFormGameOver = new PIXI.Container();
@@ -74,7 +77,7 @@ export function createFormGameOver() {
     headerFormGameOver.addChild(textHeaderFormGameOver);
 
     //очки
-    const textRecordFormGameOver = new PIXI.Text(variable.score, new FontStyle("#00FD17", 175, undefined, true));
+    textRecordFormGameOver = new PIXI.Text(variable.score, new FontStyle("#00FD17", 175, undefined, true));
     textRecordFormGameOver.anchor.set(0.5);
     textRecordFormGameOver.y = -250;
     formGameOver.addChild(textRecordFormGameOver);
@@ -96,7 +99,7 @@ export function createFormGameOver() {
     resultContainer.x = formGameOver.width;
     //монеты
     const coinIconGameOver = PIXI.Sprite.from("assets/image/UI/collect_coin_icon.png");
-    const textCoinFormGameOver = new PIXI.Text(variable.coin, new FontStyle("#F4AD25", 100, undefined, true));
+    textCoinFormGameOver = new PIXI.Text(variable.coin, new FontStyle("#F4AD25", 100, undefined, true));
     resultContainer.addChild(coinIconGameOver, textCoinFormGameOver);
     formGameOver.addChild(resultContainer);
     resultContainer.position.set(-275, -115);
@@ -105,17 +108,11 @@ export function createFormGameOver() {
 
     //дистанция
     const distanceIconGameOver = PIXI.Sprite.from("assets/image/UI/collect_distance_icon.png");
-    const textDistanceFormGameOver = new PIXI.Text(variable.distance + " м", new FontStyle("#9AC6FF", 100, undefined, true));
+    textDistanceFormGameOver = new PIXI.Text(variable.distance + " м", new FontStyle("#9AC6FF", 100, undefined, true));
+    textDistanceFormGameOver.x = (resultContainer.width - textDistanceFormGameOver.width) / 2 + 150;
     resultContainer.addChild(distanceIconGameOver, textDistanceFormGameOver);
     distanceIconGameOver.x = -15;
     distanceIconGameOver.y = 165;
     textDistanceFormGameOver.y = 165;
 
-    //--- Выравнивание текста "Дистанция"
-    const setDistance = value => {
-        variable.distance = value;
-        textDistanceFormGameOver.text = variable.distance + " м";
-        textDistanceFormGameOver.x = (resultContainer.width - textDistanceFormGameOver.width) / 2 + 150;
-    }
-    setDistance(variable.distance);
 }

@@ -2,7 +2,7 @@ import {app} from './main.js';
 import {FontStyle} from './font_style.js';
 import { containerFormIntro } from './form_intro.js';
 import { createResultsTable, createButtonOk, showLinesTable, hideLinesTable } from './functions.js';
-import { variable } from './varables.js';
+import { variable } from './variables.js';
 import { setup } from './stage.js';
 
 export let containerFormLeaderBoard;
@@ -128,12 +128,6 @@ export function createFormLeaderBoard() {
     formLeaderBoard.addChild(textLoad);
     textLoad.position.set(-textLoad.width / 2, -textLoad.height / 2);
     textLoad.visible = false;
-
-    for( let i in results ){
-        console.log("Дети:  " + i + " " + results[i] );
-     }
-     
-     console.log("\n ====================================" );
 
     //Событие при нажатии на кнопку "ОК"
     function onButtonOkPressLeaderBoard() {
