@@ -10,9 +10,13 @@ export function setup() {
     containerSetup = new PIXI.Container()
 
     const mountain = PIXI.Texture.from("assets/image/Environment/back_rocks.png");
-    const backgroundMountains = new PIXI.TilingSprite(mountain, app.screen.width, app.screen.height - app.screen.height / 2);
-    backgroundMountains.tileScale.set(0.5);
-    backgroundMountains.y = app.screen.height - backgroundMountains.height;
+    
+    const srtaticMountains = new PIXI.Sprite(mountain);
+    srtaticMountains.y = 150;
+   
+    const dinamicMountains = new PIXI.TilingSprite(mountain, app.screen.width, app.screen.height / 2);
+    dinamicMountains.tileScale.set(0.5);
+    dinamicMountains.y = app.screen.height - dinamicMountains.height;
 
     const ice = PIXI.Texture.from("assets/image/Environment/floor.png");
     const iceFloor = new PIXI.TilingSprite(ice, app.screen.width, app.screen.height - app.screen.height * 0.9);
@@ -48,7 +52,9 @@ export function setup() {
     bunnySprite.height = 150;
     bunnySprite.width = 150;
     bunnySprite.position.set(250, app.screen.height - bunnySprite.height * 1.23);
-    containerSetup.addChild(backgroundMountains,
+    containerSetup.addChild(
+        srtaticMountains,
+        dinamicMountains,
         iceFloor,
         sunSprite,
         airshipSprite,
@@ -58,7 +64,7 @@ export function setup() {
         bunnySprite);
     app.stage.addChild(containerSetup);
     createControlPanel();
-    createFormIntro()
+    createFormIntro();
     createFormGameOver();
     createFormLeaderBoard();
 }

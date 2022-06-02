@@ -86,6 +86,7 @@ export function createResultsTable(arrayGamers) {
 //----- Вывод таблицы результатов ---------------------------------------//
 export const showLinesTable = () => {
     let temp = results[variable.namePeriod].children;
+    
     hideLinesTable();
     textLoad.visible = true;
     setTimeout(() =>{

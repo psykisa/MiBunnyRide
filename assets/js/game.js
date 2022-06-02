@@ -2,6 +2,7 @@ import { app } from './main.js';
 import { FontStyle } from './font_style.js';
 import { containerSetup } from './stage.js';
 import { containerFormGameOver } from './form_gameover.js';
+import { createFormLeaderBoard } from './form_leaderboard.js';
 
 export let ticker;
 export function game() {
@@ -23,13 +24,13 @@ export function game() {
         textGameProcess.scale.x = Math.sin(fontSize);
         textGameProcess.scale.y = 2 - Math.cos(fontSize);
 
-        childrenConteinerSetup[0].tilePosition.x -= 0.1;
-        childrenConteinerSetup[1].tilePosition.x -= 2;
-        childrenConteinerSetup[2].position.x -= 5;
-        childrenConteinerSetup[3].position.x += 1;
-        childrenConteinerSetup[4].position.x -= 2;
-        childrenConteinerSetup[5].position.x -= 6;
-        childrenConteinerSetup[6].position.x -= 4;
+        childrenConteinerSetup[1].tilePosition.x -= 0.1;
+        childrenConteinerSetup[2].tilePosition.x -= 2;
+        childrenConteinerSetup[3].position.x -= 5;
+        childrenConteinerSetup[4].position.x += 1;
+        childrenConteinerSetup[5].position.x -= 2;
+        childrenConteinerSetup[6].position.x -= 6;
+        childrenConteinerSetup[7].position.x -= 4;
         moveSprite();
         function moveSprite() {
             for (let sprite of childrenConteinerSetup) {

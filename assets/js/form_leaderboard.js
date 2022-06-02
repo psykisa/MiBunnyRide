@@ -123,11 +123,17 @@ export function createFormLeaderBoard() {
     formLeaderBoard.addChild(resultsMonth);
     formLeaderBoard.addChild(resultsWeek);
     results.push(resultsAlltime, resultsMonth, resultsWeek);
-    
+
     textLoad = new PIXI.Text("Загрузка...", new FontStyle("#00295D", 80));
     formLeaderBoard.addChild(textLoad);
     textLoad.position.set(-textLoad.width / 2, -textLoad.height / 2);
     textLoad.visible = false;
+
+    for( let i in results ){
+        console.log("Дети:  " + i + " " + results[i] );
+     }
+     
+     console.log("\n ====================================" );
 
     //Событие при нажатии на кнопку "ОК"
     function onButtonOkPressLeaderBoard() {
@@ -139,9 +145,12 @@ export function createFormLeaderBoard() {
         hideLinesTable();
         variable.namePeriod = 0;
         periodFormLeaderBoard.text = massivePeriod[variable.namePeriod];
+        results.length = 0;
         app.stage.removeChildren();
         setup();
+        
     }
+
     //События кнопок "Вперед" и "Назад"
     function onArrowButtonForwardDown() {
         this.isdown = true;
