@@ -6,15 +6,13 @@ import { createFormLeaderBoard } from './form_leaderboard.js';
 
 export let containerSetup;
 
-export let bunnySprite;
-
 export function setup() {
     containerSetup = new PIXI.Container()
 
     const mountain = PIXI.Texture.from("assets/image/Environment/back_rocks.png");
     const srtaticMountains = new PIXI.Sprite(mountain);
     srtaticMountains.y = 150;
-   
+
     const dinamicMountains = new PIXI.TilingSprite(mountain, app.screen.width, app.screen.height / 2);
     dinamicMountains.tileScale.set(0.5);
     dinamicMountains.y = app.screen.height - dinamicMountains.height;
@@ -50,18 +48,11 @@ export function setup() {
     treeThreeSprite.width = 112;
     treeThreeSprite.position.set(100, app.screen.height - treeThreeSprite.height * 1.45);
 
-    bunnySprite = PIXI.Sprite.from("assets/image/Characters/mi_bunny_idle_03.png");
+    const bunnySprite = PIXI.Sprite.from("assets/image/Characters/mi_bunny_idle_03.png");
     bunnySprite.height = 150;
     bunnySprite.width = 150;
     bunnySprite.position.set(250, app.screen.height - bunnySprite.height * 1.23);
-    
-    bunnySprite.on("keydown", jump);
-    function jump(key){
-        if(key.keyCode == 32){
-            bunnySprite.y += 32;
-        }
-    }
-    
+
     containerSetup.addChild(
         srtaticMountains,
         dinamicMountains,
@@ -77,6 +68,7 @@ export function setup() {
     createFormIntro();
     createFormGameOver();
     createFormLeaderBoard();
+
 }
 
 

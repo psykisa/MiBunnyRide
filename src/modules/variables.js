@@ -4,6 +4,7 @@ export let variable = {
     score : 0,
     coin : 0,
     distance : 0,
-    namePeriod : 0
+    namePeriod : 0,
+    clickPointer: false,
     };
     

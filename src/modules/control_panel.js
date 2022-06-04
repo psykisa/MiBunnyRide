@@ -20,7 +20,7 @@ export function createControlPanel() {
     app.stage.addChild(pauseMask)
     pauseMask.zIndex = 10;
     pauseMask.tint = 0x000000;
-    pauseMask.alpha = 0.5;
+    pauseMask.alpha = 0.2;
     pauseMask.visible = false;
 
     //-----Звук-----//
@@ -51,6 +51,7 @@ export function createControlPanel() {
 
     //----- Панель  с кнопками ------//
     const headerMenu = new PIXI.Container();
+
     // кнопка "Развернуть"
     const activeGrowButton = PIXI.Texture.from('assets/image/UI/btn_fullscreen_active.png');
     const pressGrowButton = PIXI.Texture.from('assets/image/UI/btn_fullscreen_press.png');
@@ -105,6 +106,7 @@ export function createControlPanel() {
     //Кнопка "Развернуть"
     function onGrowButtonDown() {
         this.isdown = true;
+        variable.clickPointer = false;
         this.texture = pressGrowButton;
         if (app.renderer.view.style.width == 100 + "%") {
             app.renderer.view.style.width = 1280 + "px";
@@ -135,6 +137,7 @@ export function createControlPanel() {
     //Кнопка "Звук"
     function onSoundButtonDown() {
         this.isdown = true;
+        variable.clickPointer = false;
         sound.stop();
         this.texture = (this.texture === hoverSoundButtonOn) ? pressSoundButtonOn : pressSoundButtonOf;
         if (this.texture === pressSoundButtonOf)
@@ -160,6 +163,7 @@ export function createControlPanel() {
     //кнопка "Пауза"
     function onPauseButtonDown() {
         this.isdown = true;
+        variable.clickPointer = false;
         this.texture = pressPauseButton;
         pauseMask.visible = (!pauseMask.visible) ? true : false;
         (pauseMask.visible || containerFormGameOver.visible || containerFormLeaderBoard.visible || containerFormIntro.visible) ? ticker.stop() : ticker.start();

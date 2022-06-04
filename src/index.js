@@ -1,4 +1,4 @@
-import { setup , bunnySprite} from './modules/stage.js'
+import { setup } from './modules/stage.js'
 
 let _width = 1280;
 let _height = 640;
