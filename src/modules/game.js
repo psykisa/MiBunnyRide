@@ -71,7 +71,7 @@ export function game() {
             variable.recordScore = variable.score;
         }
         textRecord.text = variable.recordScore;
-        variable.coin = 600;
+        variable.coin = 0;
         variable.distance = 0;
         variable.score = 0;
         containerFormGameOver.visible = true;
